@@ -1,31 +1,19 @@
-## V5.7 — popravci
-- Završna kontrola Limgrave: oporavak prikaza ako ostane „Provjera…“.
-- Plutajući gumb karte otvara kartu aktivnog Chaptera 1 ili 2 prema položaju na stranici.
-- Sačuvani postojeći ključevi lokalnog napretka.
+# Elden Ring Master Guide V5.11
 
-# Elden Ring Master Guide — V5.6
+## Instalacija GitHub Pages
 
-Interaktivni Elden Ring vodič na hrvatskom jeziku, pripremljen za GitHub Pages.
+1. U repozitoriju `elden-ring-master-guide` zamijeni samo `index.html` datotekom iz ovog ZIP-a.
+2. `README.md` možeš ostaviti ili zamijeniti ovim README-om.
+3. Pričekaj GitHub Pages objavu i osvježi Safari.
 
-## Datoteke
+## Novo
+- Gornji izbornik: NPC, Trofeji, Items i Profili.
+- Neovisni profili s lokalnim spremanjem u Safari.
+- Izvoz i uvoz JSON sigurnosne kopije profila.
+- Resetiranje zadataka Chaptera 2; Chapter 1 ako je obuhvaćen prepoznatim spremnikom.
+- Početni Items pregled s poveznicama na postojeće rute.
 
-- `index.html` — cijela interaktivna web-stranica vodiča (otvara se automatski na GitHub Pages).
-- `README.md` — ove upute. README nije web-stranica vodiča.
-
-## Postavljanje na GitHub (iPhone / Safari)
-
-1. Preuzmi ZIP i u aplikaciji **Datoteke (Files)** dodirni ZIP kako bi se raspakirao.
-2. Otvori svoj repozitorij `elden-ring-master-guide` na GitHubu.
-3. Na kartici **Code** odaberi **Add file → Upload files**. Ako se ta opcija ne vidi na mobitelu, u Safariju uključi **Request Desktop Website**.
-4. Iz raspakirane mape prenesi **obje datoteke**: `index.html` i `README.md`. Obje moraju biti u **korijenu (root)** repozitorija, a ne u podmapi.
-5. Potvrdi promjene gumbom **Commit changes**.
-6. Otvori **Settings → Pages** i postavi **Build and deployment → Source: Deploy from a branch → Branch: main → Folder: /(root)** pa odaberi **Save**.
-7. Pričekaj objavu (može potrajati nekoliko minuta) i otvori adresu `https://pilabooo.github.io/elden-ring-master-guide/`.
-
-## Ako vidiš samo bijelu stranicu s naslovom repozitorija
-
-Provjeri da `index.html` postoji u korijenu repozitorija i da GitHub Pages objavljuje granu `main` iz mape `/(root)`. Sama datoteka `README.md` ne zamjenjuje `index.html`.
-
-## Napredak i sigurnost podataka
-
-Oznake i napredak web-aplikacije mogu biti spremljeni lokalno u pregledniku. Brisanje repozitorija ili promjena adrese web-stranice ne jamči prijenos tih podataka. Nemoj brisati podatke Safarija za web-stranicu ako želiš sačuvati postojeći napredak.
+## Napomene
+- Trofeji nisu povezani s PSN računom; označavanje u vodiču nije potvrda stvarnog PSN trofeja.
+- Trenutno su na webu samo Chapter 1 i 2; ostatak Master Guide V30 tek treba prenijeti.
+- Reset Chaptera i profile testirati na kopiji podataka prije ozbiljne upotrebe.
