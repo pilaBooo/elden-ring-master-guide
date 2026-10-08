@@ -660,7 +660,7 @@ v47Refresh();
 const KEY='er-master-weeping-v1-progress',MARK='er-master-weeping-v1-marker';
 const checks=[...document.querySelectorAll('#wp-chapter [data-wp]')], reviews=[...document.querySelectorAll('#wp-review [data-wp-review]')];
 let saved={},marker=1;try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};marker=Number(localStorage.getItem(MARK)||1)}catch(e){}
-checks.forEach(c=>{c.checked=!!saved[c.dataset.wp];c.addEventListener('change',()=>{saved[c.dataset.wp]=c.checked;persist();refresh();if(c.checked){const st=c.closest('.wp-step');if(st&&stepDone(Number(st.id.split('-').pop()))){st.open=false;const next=nextIncomplete();if(next){marker=next;localStorage.setItem(MARK,String(marker));const target=document.getElementById('wp-step-'+next);if(target){target.parentElement.open=true;target.open=true}}}}})});
+checks.forEach(c=>{c.checked=!!saved[c.dataset.wp];c.addEventListener('change',()=>{saved[c.dataset.wp]=c.checked;persist();refresh();if(c.checked){const st=c.closest('.wp-step');if(st&&stepDone(Number(st.id.split('-').pop())) && Number(st.id.split('-').pop())===marker && window.erActiveChapter?.()===2){st.open=false;const next=nextIncomplete();if(next){marker=next;localStorage.setItem(MARK,String(marker));const target=document.getElementById('wp-step-'+next);if(target){target.parentElement.open=true;target.open=true}}}}})});
 
 reviews.forEach(c=>{let k=c.dataset.wpReview;c.checked=!!saved['review-'+k];c.addEventListener('change',()=>{saved['review-'+k]=c.checked;persist();refresh()})});
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
@@ -801,4 +801,38 @@ document.addEventListener('DOMContentLoaded',function(){
  render();
  document.addEventListener('change',e=>{if(!root.contains(e.target))render()});
 });
-</script></body></html>
+</script><script>
+/* V5.8: one global current-position bookmark; per-chapter markers retained. */
+(function(){
+const ACTIVE='er-master-active-position-v58';
+const LIM='er-master-limgrave-v3-marker', WP='er-master-weeping-v1-marker';
+function read(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function write(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function get(){let a;try{a=JSON.parse(read(ACTIVE)||'null')}catch(e){};
+ if(a&&[1,2].includes(a.chapter)&&Number.isInteger(a.route))return a;
+ const l=Number(read(LIM)||1),w=Number(read(WP)||1);
+ return {chapter:(w>1?2:1),route:(w>1?w:l)};
+}
+function set(chapter,route){write(ACTIVE,JSON.stringify({chapter,route}));write(chapter===1?LIM:WP,String(route));paint()}
+window.erActiveChapter=()=>get().chapter;
+function openAncestors(el){let p=el;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement}}
+function goPosition(){let a=get(),el=document.getElementById((a.chapter===1?'step-':'wp-step-')+a.route);if(!el)return;openAncestors(el);requestAnimationFrame(()=>el.scrollIntoView({behavior:'smooth',block:'start'}))}
+function goChapterMap(chapter){let el=document.getElementById(chapter===1?'limgrave-map':'weeping-map');if(!el)return;openAncestors(el);requestAnimationFrame(()=>el.scrollIntoView({behavior:'smooth',block:'start'}))}
+window.goMarker=goPosition;
+window.goMap=()=>goChapterMap(get().chapter);
+const oldSet=window.setMarker;
+window.setMarker=function(e,n){if(typeof oldSet==='function')oldSet(e,n);set(1,n)};
+/* Chapter 2 click is already handled by existing delegated handler; update global position as well. */
+document.addEventListener('click',e=>{let b=e.target.closest('[data-wp-marker]');if(b){set(2,Number(b.dataset.wpMarker));return}
+ let m=e.target.closest('[data-map-target]');if(m){const ch=m.closest('#wp-chapter')?2:1;setActiveOnly(ch)}
+},true);
+function setActiveOnly(ch){let a=get();if(a.chapter===ch)return;let n=Number(read(ch===1?LIM:WP)||1);set(ch,n)}
+/* Keep existing automatic progression only in the currently active chapter. */
+document.addEventListener('change',e=>{let a=get();if(a.chapter===1){let n=Number(read(LIM)||a.route);if(n!==a.route)set(1,n)}else{let n=Number(read(WP)||a.route);if(n!==a.route)set(2,n)}},false);
+function paint(){let a=get();document.querySelectorAll('.markerBtn').forEach(b=>{let active=a.chapter===1&&Number(b.dataset.marker)===a.route;b.classList.toggle('active',active);b.textContent=active?'OVDJE SAM':'Označi ●'});
+ document.querySelectorAll('[data-wp-marker]').forEach(b=>{let active=a.chapter===2&&Number(b.dataset.wpMarker)===a.route;b.classList.toggle('active',active);b.textContent=active?'● OVDJE SAM':'● Označi'});
+}
+window.addEventListener('load',paint);paint();
+})();
+</script>
+</body></html>
