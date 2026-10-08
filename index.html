@@ -3,7 +3,7 @@
 <html lang="hr">
 <head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>Elden Ring Master Guide — Limgrave V3</title>
+<title>Elden Ring Master Guide — Limgrave V4.3</title>
 <style>
 :root{--bg:#111315;--panel:#1b1e21;--panel2:#24282c;--text:#f2f2f2;--muted:#b7bcc2;--gold:#d5ae58;--blue:#62a8e5;--red:#e56b63;--green:#73c991;--line:#3b4045}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
@@ -58,13 +58,24 @@ main{max-width:900px;margin:auto;padding:16px 14px 90px}.hero{background:linear-
 .master-panel>h2{display:none}
 .master-panel:not([open]){min-height:0}
 .master-panel:not([open])>summary{padding:8px 0}
+
+/* V4.3: iOS Safari nested <details> collapse layout fix */
+details.master-panel:not([open]) > :not(summary),
+details.chapter-group:not([open]) > :not(summary),
+details.subchapter:not([open]) > :not(summary),
+details.npc-card:not([open]) > :not(summary),
+details.step:not([open]) > :not(summary) { display:none !important; }
+details.master-panel:not([open]), details.chapter-group:not([open]),
+details.subchapter:not([open]), details.npc-card:not([open]),
+details.step:not([open]) { height:auto !important; min-height:0 !important; max-height:none !important; }
+details.master-panel,details.chapter-group,details.subchapter,details.npc-card { contain:none; }
 </style></head>
 <body>
 <header><div class="top"><h1>Elden Ring Master Guide</h1><button onclick="toggleAll(true)">Otvori sve</button><button onclick="toggleAll(false)">Zatvori sve</button></div></header>
 <main id="top">
 <section class="hero">
 <h2>Limgrave → Stormveil Castle → Godrick</h2>
-<div class="sub">Interaktivni Limgrave V4.2 • 48 ruta • podchapteri • sinkronizirani NPC Quest Tracker</div>
+<div class="sub">Interaktivni Limgrave V4.3 • 48 ruta • podchapteri • sinkronizirani NPC Quest Tracker</div>
 <div class="progress"><div class="bar" id="bar"></div></div>
 <div class="stats"><span id="progressText">0/0 završeno</span><span id="pct">0%</span></div>
 <div class="badges"><span class="badge">🔵 NPC quest-safe</span><span class="badge">🔴 STOP / missable</span><span class="badge">⚔ Boss</span><span class="badge">◆ ključni loot</span></div>
