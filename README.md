@@ -1,3 +1,8 @@
+## V5.7 — popravci
+- Završna kontrola Limgrave: oporavak prikaza ako ostane „Provjera…“.
+- Plutajući gumb karte otvara kartu aktivnog Chaptera 1 ili 2 prema položaju na stranici.
+- Sačuvani postojeći ključevi lokalnog napretka.
+
 # Elden Ring Master Guide — V5.6
 
 Interaktivni Elden Ring vodič na hrvatskom jeziku, pripremljen za GitHub Pages.

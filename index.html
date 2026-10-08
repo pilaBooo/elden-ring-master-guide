@@ -526,7 +526,18 @@ function marker(){return Number(read(MARKER_KEY,'1'))||1}
 function setMarker(e,n){if(e){e.preventDefault();e.stopPropagation()}write(MARKER_KEY,String(n));update()}
 function jumpTo(n){const d=document.getElementById('step-'+n);if(!d)return;d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}
 function goMarker(){jumpTo(marker())}
-function goMap(){document.getElementById('limgrave-map').scrollIntoView({behavior:'smooth',block:'start'})}
+function goMap(){
+ const wp=document.getElementById('wp-chapter');
+ const lim=document.getElementById('limgrave-map');
+ const wr=document.getElementById('weeping-map');
+ const r=wp?wp.getBoundingClientRect():null;
+ const useWp=!!(r && (r.top<window.innerHeight*0.65 && r.bottom>0));
+ const target=useWp?wr:lim;
+ if(!target)return;
+ let node=target.parentElement;
+ while(node){if(node.tagName==='DETAILS')node.open=true;node=node.parentElement}
+ requestAnimationFrame(()=>target.scrollIntoView({behavior:'smooth',block:'start'}));
+}
 function goTop(){window.scrollTo({top:0,behavior:'smooth'})}
 function toggleAll(v){document.querySelectorAll("details.master-panel, details.chapter-group, details.subchapter, details.npc-card, details.step").forEach(d=>d.open=v)}
 function stepInputs(n){const d=document.getElementById('step-'+n);return d?Array.from(d.querySelectorAll('input[data-id]')):[]}
@@ -755,4 +766,39 @@ function updateAggregate(){
 document.addEventListener('change',()=>setTimeout(updateAggregate,0));
 window.addEventListener('load',updateAggregate);updateAggregate();
 })();
+</script><script>
+/* V5.7: independent recovery for end-of-Limgrave audit if older checkpoint initialization stopped. */
+document.addEventListener('DOMContentLoaded',function(){
+ const status=document.getElementById('v47status'), root=document.getElementById('v47rows');
+ if(!status||!root||status.textContent.trim()!=='Provjera…')return;
+ const items=[
+ ['Patches je živ — poštedi ga u Murkwater Cave (#18)','npc-patches-18-0',18],
+ ['Gatekeeper Gostoc je živ (#43)','npc-gatekeeper-gostoc-43-0',43],
+ ['Roderiki je predan Chrysalids’ Memento prije Godricka (#45)','npc-roderika-45-1',45],
+ ['Razgovarao si s Nepheli prije Godricka (#47)','npc-nepheli-loux-47-0',47],
+ ["Aktivirao si Godrick's Great Rune u Divine Tower of Limgrave",'great-rune-active',48,true],
+ ['Uzeo si gesture Bravo! kod The First Step nakon Godricka','bravo-collected',49,true]
+ ];
+ const key='er-master-limgrave-v47-final-review';
+ function extra(){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(e){return {}}}
+ function checked(id,isExtra){if(isExtra)return !!extra()[id];try{return typeof taskDone==='function'&&taskDone(id)}catch(e){return false}}
+ function render(){root.replaceChildren();let count=0;
+  items.forEach(([label,id,step,isExtra])=>{
+   const done=checked(id,isExtra);if(done)count++;
+   const row=document.createElement('div');row.className='auditrow';
+   const cb=document.createElement('input');cb.type='checkbox';cb.checked=done;cb.setAttribute('aria-label',label);
+   cb.addEventListener('change',()=>{
+    if(isExtra){const a=extra();a[id]=cb.checked;try{localStorage.setItem(key,JSON.stringify(a))}catch(e){}}
+    else if(typeof changeTask==='function'){changeTask(id,cb.checked)}
+    render();
+   });
+   const span=document.createElement('span');span.textContent=label;
+   const a=document.createElement('a');a.href=step===49?'#cleanup':'#step-'+step;a.textContent='Idi ↗';
+   row.append(cb,span,a);root.append(row);
+  });
+  status.textContent='Limgrave kontrola: '+count+'/'+items.length+' potvrđeno';
+ }
+ render();
+ document.addEventListener('change',e=>{if(!root.contains(e.target))render()});
+});
 </script></body></html>
