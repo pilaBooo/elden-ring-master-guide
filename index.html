@@ -1259,4 +1259,16 @@ refresh();
  else syncLimgraveMarker();
 })();
 </script>
+
+<!-- V5.27: Match Chapter 2 marker-only highlight. -->
+<style id="v527-marker-only-highlight">
+/* Do not color the entire Chapter 1 route when it is bookmarked. */
+#contents-panel .step.current {border-color:var(--line)!important;box-shadow:none!important}
+#contents-panel .step.current > summary {background:var(--panel)!important}
+/* Keep the active OVDJE SAM button blue, as in Chapter 2. */
+#contents-panel .step.current > summary .wp-marker-button[data-marker],
+#contents-panel .step > summary .wp-marker-button[data-marker].active {
+ background:#1c4160!important;border-color:#62a8e5!important;color:#d9efff!important;
+}
+</style>
 </body></html>
