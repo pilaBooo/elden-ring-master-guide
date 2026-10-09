@@ -1033,4 +1033,170 @@ const items=document.getElementById('items-list-v511');if(items){let terms=['Gra
  queue();
 })();
 </script>
+
+<style id="v523-style">
+#platinum-panel,#items-v511,#npc-tracker{display:block!important;margin:12px 0!important}
+#platinum-panel:not(.v523-selected),#items-v511:not(.v523-selected),#npc-tracker:not(.v523-selected){display:none!important}
+#npc-tracker-panel{margin:0}
+#npc-tracker .npc-task-row input{pointer-events:none;opacity:.85}
+.v523-group{border:1px solid #454a50;border-radius:12px;margin:12px 0;background:#1b1e22;overflow:hidden}
+.v523-group>summary{padding:16px;cursor:pointer;color:#e8c77d;font-weight:750;display:flex;justify-content:space-between;gap:10px}
+.v523-entry{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #363b42;padding:12px 15px;line-height:1.5}
+.v523-entry .v523-name{flex:1;min-width:0}
+.v523-entry button{border:1px solid #666;background:#30343a;color:#a8d4ff;border-radius:9px;padding:7px 9px;cursor:pointer}
+.v523-done{color:#98d7a5}.v523-pending{color:#c3c6cc}
+.v523-note{color:#b9bdc4;font-size:.9rem;line-height:1.5}
+</style>
+<script id="v523-navigation-and-trackers">
+(function(){
+'use strict';
+const ids=['npc-tracker-panel','platinum-panel','items-v511'];
+const key='er-master-v523-last-top-panel';
+const $=id=>document.getElementById(id);
+const panels=()=>ids.map($).filter(Boolean);
+const host=$('contents');
+const npcWrap=$('npc-tracker');
+if(host && npcWrap){
+  // All three panels share one fixed slot immediately after Walkthrough.
+  host.after(npcWrap);
+  npcWrap.after($('items-v511'));
+  npcWrap.after($('platinum-panel'));
+}
+const activeClass='v523-selected';
+let active=null;
+function container(id){return id==='npc-tracker-panel'?npcWrap:$(id)}
+function show(id, expand, subcategory){
+  const selected=container(id);
+  if(!selected)return;
+  if(active===id && !expand && !subcategory){
+    panels().forEach(p=>p.open=false);
+    [npcWrap,$('platinum-panel'),$('items-v511')].forEach(p=>p&&p.classList.remove(activeClass));
+    active=null; return;
+  }
+  panels().forEach(p=>p.open=false);
+  [npcWrap,$('platinum-panel'),$('items-v511')].forEach(p=>p&&p.classList.remove(activeClass));
+  selected.classList.add(activeClass);
+  const panel=$(id);panel.open=true;active=id;
+  try{localStorage.setItem(key,id)}catch(e){}
+  if(subcategory){
+    const child=$(subcategory);
+    if(child)child.open=true;
+  }
+  requestAnimationFrame(()=>{(subcategory?$(subcategory):panel)?.scrollIntoView({behavior:'smooth',block:'start'})});
+}
+window.openMasterPanel=function(id){show(id,false,null)};
+window.v523OpenItems=function(category){show('items-v511',true,'v523-item-'+category)};
+document.addEventListener('click',function(e){
+  const button=e.target.closest('header button[onclick^="openMasterPanel"]');
+  if(!button)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  const match=button.getAttribute('onclick').match(/'([^']+)'/);
+  if(match)show(match[1],false,null);
+},true);
+function openRoute(step){
+  const route=$(step);
+  if(!route)return;
+  const walk=$('contents-panel');if(walk)walk.open=true;
+  let p=route;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement}
+  route.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function routeFor(input){
+  return input.closest('.step,.wp-step');
+}
+function labelFor(input){
+  return input.closest('label')?.querySelector('span')?.textContent?.trim()||'';
+}
+function checked(input){return !!input?.checked}
+function make(tag,cls,txt){
+ const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el;
+}
+function line(title, input, step, suffix){
+ const row=make('div','v523-entry');
+ const status=make('span','v523-pending','○');
+ const name=make('span','v523-name',title);
+ const button=make('button','',suffix||'Ruta ↗');
+ button.type='button';button.addEventListener('click',()=>openRoute(step));
+ row.append(status,name,button);
+ row._update=()=>{status.textContent=checked(input)?'✓':'○';status.className=checked(input)?'v523-done':'v523-pending'};
+ row._update();return row;
+}
+const itemList=$('items-list-v511');
+const trophy=$('platinum-panel');
+const categories=[
+ {id:'armaments',title:'Legendary Armaments',rx:/Grafted Blade Greatsword|Sword of Night and Flame|Ruins Greatsword|Marais Executioner.s Sword|Dark Moon Greatsword|Bolt of Gransax|Eclipse Shotel|Devourer.s Scepter|Golden Order Greatsword/i},
+ {id:'talismans',title:'Legendary Talismans',rx:/Radagon Icon|Radagon.s Soreseal|Godfrey Icon|Moon of Nokstella|Old Lord.s Talisman|Erdtree.s Favor \+2|Dragoncrest Greatshield Talisman|Marika.s Soreseal/i},
+ {id:'sorceries',title:'Legendary Sorceries & Incantations',rx:/Comet Azur|Stars of Ruin|Founding Rain of Stars|Ranni.s Dark Moon|Flame of the Fell God|Greyoll.s Roar|Elden Stars/i},
+ {id:'ashes',title:'Legendary Ashen Remains',rx:/Mimic Tear Ashes|Black Knife Tiche|Lhutel the Headless|Redmane Knight Ogha|Cleanrot Knight Finlay|Ancient Dragon Knight Kristoff/i}
+];
+const allInputs=Array.from(document.querySelectorAll('#contents-panel .step input[data-id],#contents-panel .wp-step input[data-wp]'));
+const groups={};
+if(itemList){
+ itemList.replaceChildren();
+ const note=make('p','v523-note','Status se čita samo iz Walkthrougha. Prikazani su predmeti pronađeni u trenutačna dva Chaptera; ostali se dodaju s novim Chapterima.');
+ itemList.append(note);
+ categories.forEach(cat=>{
+  const group=make('details','v523-group');group.id='v523-item-'+cat.id;
+  const summary=make('summary');const title=make('span','',cat.title),counter=make('span','', '0/0');
+  summary.append(title,counter);group.append(summary);
+  const entries=[];
+  allInputs.forEach(input=>{
+    const label=labelFor(input);if(!cat.rx.test(label))return;
+    const route=routeFor(input);if(!route)return;
+    const step=route.id;
+    const matched=label.match(cat.rx);const name=matched?matched[0]:label;
+    const row=line(name,input,step,step.startsWith('wp-')?'Ch2 ↗':'Ch1 ↗');
+    group.append(row);entries.push({input,row});
+  });
+  if(!entries.length)group.append(make('p','v523-note','Predmeti ove kategorije nalaze se u kasnijim Chapterima.'));
+  itemList.append(group);
+  groups[cat.id]={group,counter,entries,update(){
+    entries.forEach(x=>x.row._update());
+    counter.textContent=entries.filter(x=>checked(x.input)).length+'/'+entries.length;
+  }};
+ });
+}
+if(trophy){
+ trophy.querySelector('summary').textContent='🏆 Trofeji · Platinum Tracker';
+ Array.from(trophy.querySelectorAll('.platinum-line,p')).forEach(n=>n.remove());
+ trophy.append(make('p','v523-note','Boss trofeji i napredak predmeta automatski se čitaju iz Walkthrougha. Brojači predmeta obuhvaćaju samo trenutačno unesene Chaptere.'));
+ const bossDefs=[['Margit, the Fell Omen','lim-42-3','step-42'],['Shardbearer Godrick','lim-48-4','step-48'],['Leonine Misbegotten','29-2','wp-step-29']];
+ const bossGroup=make('details','v523-group');bossGroup.append(make('summary','','Boss trofeji'));
+ const bosses=[];
+ bossDefs.forEach(([name,id,step])=>{
+  const input=document.querySelector('[data-id="'+id+'"],[data-wp="'+id+'"]');
+  if(!input)return;
+  const row=line(name,input,step,'Ruta ↗');bossGroup.append(row);bosses.push(row);
+ });
+ trophy.append(bossGroup);
+ categories.forEach(cat=>{
+  const row=make('div','v523-entry');
+  const name=make('span','v523-name',cat.title);
+  const progress=make('span','v523-pending','0/0');
+  const go=make('button','','💎 Items ↗');
+  go.type='button';go.addEventListener('click',()=>window.v523OpenItems(cat.id));
+  row.append(name,progress,go);trophy.append(row);
+  const old=groups[cat.id]?.update;
+  if(groups[cat.id])groups[cat.id].update=function(){old.call(groups[cat.id]);progress.textContent=groups[cat.id].counter.textContent};
+ });
+ window.v523RefreshBosses=()=>bosses.forEach(b=>b._update());
+}
+function refresh(){
+ Object.values(groups).forEach(g=>g.update());
+ window.v523RefreshBosses?.();
+ document.querySelectorAll('#npcStoryList input[data-npc-v55],#npcStoryList input[data-wp-npc]').forEach(i=>{i.disabled=true});
+}
+document.addEventListener('change',()=>setTimeout(refresh,0),true);
+document.addEventListener('click',()=>setTimeout(refresh,0),true);
+window.addEventListener('pageshow',()=>setTimeout(refresh,100));
+window.addEventListener('load',()=>setTimeout(refresh,200));
+document.querySelectorAll('#npcStoryList input').forEach(i=>{i.disabled=true;i.setAttribute('aria-label','Status samo za pregled; mijenja se u Walkthroughu')});
+try{
+ const last=localStorage.getItem(key);
+ if(ids.includes(last)){const el=container(last);el?.classList.add(activeClass);active=last}
+}catch(e){}
+panels().forEach(p=>p.open=false);
+document.querySelectorAll('#npcStoryList details,#items-v511 details,#platinum-panel details').forEach(p=>p.open=false);
+refresh();
+})();
+</script>
 </body></html>
