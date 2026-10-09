@@ -928,4 +928,27 @@ const items=document.getElementById('items-list-v511');if(items){let terms=['Gra
    if(panel)panel.classList.toggle('v514-visible',id===target[1]);
   });
  },true);
-})();</script></body></html>
+})();</script><script id="v517-route-counters">
+/* V5.17: show task totals even before any checkbox interaction. */
+(function(){
+ function sync(){
+   document.querySelectorAll('.step[id^="step-"]').forEach(function(step){
+     var boxes=Array.from(step.querySelectorAll('input[type="checkbox"]')).filter(function(input){return !input.closest('.step details.step')});
+     var label=step.querySelector(':scope > summary .count');
+     if(!label){var sum=step.querySelector(':scope > summary');if(!sum)return;label=document.createElement('span');label.className='count';sum.appendChild(label)}
+     label.textContent=boxes.filter(function(b){return b.checked}).length+'/'+boxes.length;
+   });
+   document.querySelectorAll('#wp-chapter .wp-step[id^="wp-step-"]').forEach(function(step){
+     var boxes=Array.from(step.querySelectorAll('input[data-wp]'));
+     var label=step.querySelector(':scope > summary .count');
+     if(!label){var sum=step.querySelector(':scope > summary');if(!sum)return;label=document.createElement('span');label.className='count';sum.appendChild(label)}
+     label.textContent=boxes.filter(function(b){return b.checked}).length+'/'+boxes.length;
+   });
+ }
+ document.addEventListener('DOMContentLoaded',sync);
+ window.addEventListener('load',sync);
+ window.addEventListener('pageshow',sync);
+ document.addEventListener('change',function(e){if(e.target.matches('input[type="checkbox"]'))queueMicrotask(sync)});
+ document.addEventListener('toggle',function(e){if(e.target.matches('details'))sync()},true);
+})();
+</script></body></html>
