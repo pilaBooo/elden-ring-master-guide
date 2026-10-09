@@ -978,4 +978,50 @@ const items=document.getElementById('items-list-v511');if(items){let terms=['Gra
   scheduleSync();
 })();
 </script>
+
+<script id="v519-independent-chapter1-subchapter-sync">
+/* Chapter 1: one source of truth for the route and subchapter summaries.
+   Count complete routes, not individual items. Works with persisted checkboxes. */
+(function(){
+ var groups=[['1.1',1,10],['1.2',11,16],['1.3',17,23],['1.4',24,40],['1.5',41,48]];
+ var busy=false;
+ function sync(){
+  if(busy)return;busy=true;
+  try{
+   var total=0;
+   groups.forEach(function(g){
+    var complete=0;
+    for(var n=g[1];n<=g[2];n++){
+     var route=document.getElementById('step-'+n);
+     if(!route)continue;
+     var checks=route.querySelectorAll('input[data-id]');
+     if(checks.length && Array.prototype.every.call(checks,function(c){return c.checked;}))complete++;
+    }
+    total+=complete;
+    var label=document.querySelector('[data-group="'+g[0]+'"]');
+    if(label){var next=complete+'/'+(g[2]-g[1]+1);if(label.textContent!==next)label.textContent=next;}
+   });
+   var chapter=document.getElementById('chapterCount');
+   if(chapter && chapter.textContent!==total+'/48')chapter.textContent=total+'/48';
+  }finally{busy=false;}
+ }
+ function queue(){setTimeout(sync,0);setTimeout(sync,200);}
+ document.addEventListener('change',queue,true);
+ document.addEventListener('click',queue,true);
+ document.addEventListener('DOMContentLoaded',queue);
+ window.addEventListener('load',queue);
+ window.addEventListener('pageshow',queue);
+ document.addEventListener('visibilitychange',function(){if(!document.hidden)queue();});
+ // Reconcile delayed restoration and other counters without observing our own labels.
+ function watch(){
+  var container=document.querySelector('#contents-panel');if(!container)return;
+  var obs=new MutationObserver(function(records){
+   if(records.some(function(r){return r.target.matches && (r.target.matches('.count')||r.target.matches('input[data-id]'));}))queue();
+  });
+  obs.observe(container,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['checked']});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
+ queue();
+})();
+</script>
 </body></html>
