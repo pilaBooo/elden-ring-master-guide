@@ -951,4 +951,31 @@ const items=document.getElementById('items-list-v511');if(items){let terms=['Gra
  document.addEventListener('change',function(e){if(e.target.matches('input[type="checkbox"]'))queueMicrotask(sync)});
  document.addEventListener('toggle',function(e){if(e.target.matches('details'))sync()},true);
 })();
-</script></body></html>
+</script>
+<script id="v518-chapter1-route-counter-fix">
+/* V5.18: Chapter 1 is a count of COMPLETED ROUTES, not individual checkboxes.
+   Derive it from the same DOM checkboxes displayed in each route (e.g. 8/8). */
+(function(){
+  function syncChapterOne(){
+    var chapter=document.getElementById('chapterCount');
+    if(!chapter)return;
+    var completed=0;
+    for(var n=1;n<=48;n++){
+      var route=document.getElementById('step-'+n);
+      if(!route)continue;
+      var boxes=route.querySelectorAll('input[data-id]');
+      if(boxes.length && Array.prototype.every.call(boxes,function(b){return b.checked;}))completed++;
+    }
+    chapter.textContent=completed+'/48';
+  }
+  function scheduleSync(){setTimeout(syncChapterOne,0);setTimeout(syncChapterOne,120);}
+  document.addEventListener('change',scheduleSync,true);
+  document.addEventListener('click',scheduleSync,true);
+  document.addEventListener('DOMContentLoaded',scheduleSync);
+  window.addEventListener('load',scheduleSync);
+  window.addEventListener('pageshow',scheduleSync);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)scheduleSync();});
+  scheduleSync();
+})();
+</script>
+</body></html>
