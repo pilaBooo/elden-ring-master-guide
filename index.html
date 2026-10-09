@@ -3,7 +3,7 @@
 <html lang="hr">
 <head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>Elden Ring Master Guide V5.6 — Chapteri, NPC, napredak</title>
+<title>Elden Ring Master Guide V5.26 — Chapteri, NPC, napredak</title>
 <style>
 :root{--bg:#111315;--panel:#1b1e21;--panel2:#24282c;--text:#f2f2f2;--muted:#b7bcc2;--gold:#d5ae58;--blue:#62a8e5;--red:#e56b63;--green:#73c991;--line:#3b4045}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
@@ -1230,6 +1230,33 @@ window.addEventListener('load',()=>setTimeout(refresh,350));
 document.addEventListener('change',()=>setTimeout(refresh,30),true);
 document.addEventListener('click',()=>setTimeout(refresh,30),true);
 refresh();
+})();
+</script>
+
+<!-- V5.26: Chapter 1 active location marker visual parity with Chapter 2. -->
+<style id="v526-marker-visual-fix">
+#contents-panel .step.current > summary .wp-marker-button[data-marker],
+#contents-panel .step > summary .wp-marker-button[data-marker].active {
+ background:#1c4160!important; border-color:#62a8e5!important; color:#d9efff!important;
+}
+</style>
+<script id="v526-marker-state-sync">
+(function(){
+ function syncLimgraveMarker(){
+   document.querySelectorAll('#contents-panel .step > summary .wp-marker-button[data-marker]').forEach(function(btn){
+     var parent=btn.closest('.step');
+     var active=!!parent && parent.classList.contains('current');
+     btn.classList.toggle('active',active);
+     btn.setAttribute('aria-pressed',active?'true':'false');
+   });
+ }
+ document.addEventListener('click',function(event){
+   if(event.target.closest('.wp-marker-button[data-marker],#returnMarker,#goMarker'))
+     requestAnimationFrame(syncLimgraveMarker);
+ },true);
+ window.addEventListener('pageshow',syncLimgraveMarker);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncLimgraveMarker);
+ else syncLimgraveMarker();
 })();
 </script>
 </body></html>
