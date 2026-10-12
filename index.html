@@ -2194,8 +2194,9 @@ function goPrimary(){const p=read(PRIMARY);return p?openElement(document.getElem
 function goSecondary(){const p=read(SECONDARY);return p?openElement(document.getElementById(p.id)):false}
 function goPrimaryMap(){const p=read(PRIMARY);if(!p)return false;
  const chapter=document.getElementById('v529-ch-'+p.chapter);
- let target=p.chapter===1?document.getElementById('limgrave-map'):p.chapter===2?document.getElementById('weeping-map'):chapter?.querySelector('img[src^="assets/map-"]');
- if(!target){const route=document.getElementById(p.id);target=route?.closest('details.chapter-group')?.querySelector('img[src^="assets/map-"]')}
+ // V6.233: chapter map belongs to the active primary position, not the legacy CH1 map.
+ let target=p.chapter===1?document.getElementById('limgrave-map'):p.chapter===2?document.getElementById('weeping-map'):chapter?.querySelector('img.v529-map');
+ if(!target){const route=document.getElementById(p.id);const group=route?.closest('details.v529-chapter');target=group?.querySelector('img.v529-map')}
  return openElement(target);
 }
 // Capture before legacy handlers, which otherwise recreate Chapter 1 bookmarks.
@@ -2207,12 +2208,12 @@ window.addEventListener('click',e=>{
   paint();return;
  }
  const lock=e.target.closest('[data-er232-lock]');if(lock){e.preventDefault();const k=lock.dataset.er232Lock==='primary'?LOCKP:LOCKS;write(k,!locked(k));paint();return}
- const map=e.target.closest('[data-er232-map]');if(map){e.preventDefault();e.stopPropagation();goPrimaryMap();return}
+ const map=e.target.closest('[data-er232-map],button.mapfab');if(map){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPrimaryMap();return}
  const ret=e.target.closest('.v59-side-return');if(ret){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goSecondary();return}
  const primaryReturn=e.target.closest('button.continue[onclick*="goMarker"],#returnMarker,#goMarker');
  if(primaryReturn){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPrimary();return}
 },true);
-window.er232GoPrimary=goPrimary;window.er232GoMap=goPrimaryMap;
+window.er232GoPrimary=goPrimary;window.er232GoMap=goPrimaryMap;window.goMap=goPrimaryMap;
 function setup(){
  const hero=document.querySelector('.hero')||document.getElementById('contents-panel');
  if(hero&&!document.getElementById('er232-lock-settings')){
