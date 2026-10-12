@@ -274,6 +274,11 @@ details.master-panel,details.chapter-group,details.subchapter,details.npc-card {
 }
 </style>
 <meta name="description" content="Elden Ring Master Guide — interaktivni PSN i NPC walkthrough na hrvatskom.">
+<style id="v6234-ch7-style">
+/* V6.234: Chapter 7 route completion is derived from individual tasks. */
+details.v529-step[id^="v529-step-7-"] label.v529-check {display:none !important;}
+details.v529-step[id^="v529-step-7-"] .count[data-v529-count] {font-variant-numeric:tabular-nums;}
+</style>
 </head>
 <body>
 <header><div class="top"><nav class="newnav"><button onclick="openMasterPanel('npc-tracker-panel')">👥 NPC</button><button onclick="openMasterPanel('platinum-panel')">🏆 Trofeji</button><button onclick="openMasterPanel('items-v511')">💎 Items</button><button onclick="openProfiles()">👤 Profili</button></nav><div class="stackactions"><button onclick="toggleAll(true)">Otvori sve</button><button onclick="toggleAll(false)">Zatvori sve</button></div></div></header>
@@ -2225,4 +2230,47 @@ function setup(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 window.addEventListener('pageshow',paint);
-})();</script></body></html>
+})();</script><script id="v6234-ch7-auto">
+(function(){
+'use strict';
+// V6.234 first audited tranche: CH7. No independent route-completed checkbox.
+const CH='7', KEY='er-master-v529-route-checks';
+const steps=Array.from(document.querySelectorAll('details.v529-step[id^="v529-step-7-"]'));
+if(!steps.length)return;
+function read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(_){return {}}}
+function refreshStep(step,fromInteraction){
+ const tasks=Array.from(step.querySelectorAll('input[data-v533-task]'));
+ const route=step.querySelector('input[data-v529-check]');
+ if(!tasks.length||!route)return;
+ const id=route.getAttribute('data-v529-check');
+ const done=tasks.filter(t=>t.checked).length,complete=done===tasks.length;
+ const count=step.querySelector('[data-v529-count]');
+ if(count)count.textContent=done+'/'+tasks.length;
+ const changed=route.checked!==complete;
+ route.checked=complete;
+ const state=read();if(state[id]!==complete){state[id]=complete;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){}}
+ step.classList.toggle('v6234-auto-complete',complete);
+ if(fromInteraction&&complete&&changed){
+   step.open=false;
+   // Open the next step in the same chapter without checking any task.
+   const i=steps.indexOf(step);if(i>=0&&i+1<steps.length)steps[i+1].open=true;
+ }
+}
+function refreshChapter(){
+ const counter=document.querySelector('[data-chapter-counter="'+CH+'"]');
+ if(counter)counter.textContent=steps.filter(s=>s.classList.contains('v6234-auto-complete')).length+'/'+steps.length;
+}
+function refreshAll(){steps.forEach(s=>refreshStep(s,false));refreshChapter()}
+// The existing task handler persists the individual checkbox first.
+document.addEventListener('change',e=>{
+ const input=e.target.closest&&e.target.closest('input[data-v533-task]');
+ if(!input)return;
+ const step=input.closest('details.v529-step[id^="v529-step-7-"]');
+ if(!step)return;
+ refreshStep(step,true);refreshChapter();
+});
+refreshAll();
+window.addEventListener('pageshow',refreshAll);
+})();
+</script>
+</body></html>
