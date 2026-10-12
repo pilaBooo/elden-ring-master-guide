@@ -2133,7 +2133,7 @@ window.inspectBackupV6222=async function(file){
 };
 </script>
 
-<script id="er-v6228-psn-nav-script">
+<script type="application/x-er-disabled" id="er-v6228-psn-nav-script">
 (function(){
 'use strict';
 function ready(){
@@ -2164,4 +2164,64 @@ function ready(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();
 </script>
-</body></html>
+<style id="er232-css">#er-v6228-nav{display:none!important}.er232-settings{padding:12px;margin:14px 0;border:1px solid #58636b;border-radius:12px;background:#22282e;color:#eef1f5}.er232-settings strong{display:block;margin-bottom:9px}.er232-lock-row{display:flex;gap:7px;flex-wrap:wrap}.er232-lock-row button{background:#303b48;border:1px solid #778899;border-radius:9px;padding:9px;color:#fff;font-size:13px}.er232-settings small{display:block;margin-top:9px;color:#c3cbd2}.v59-side-return{bottom:85px!important}</style><script id="er232-positions">(function(){
+'use strict';
+const PRIMARY='er-v6232-primary', SECONDARY='er-v6232-secondary', LOCKP='er-v6232-primary-locked', LOCKS='er-v6232-secondary-locked';
+const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+const write=(k,v)=>{try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const same=(a,b)=>a&&b&&a.id===b.id;
+const locked=k=>read(k)!==false; // Locked by default; setting persists even with no position.
+const resolve=(b)=>{
+ if(b.matches('[data-marker]'))return {id:'step-'+b.dataset.marker,chapter:1};
+ if(b.matches('[data-wp-marker]'))return {id:'wp-step-'+b.dataset.wpMarker,chapter:2};
+ if(b.matches('[data-v529-marker]'))return {id:'v529-step-'+b.dataset.v529Marker,chapter:Number(b.dataset.v529Marker.split('-')[0])};
+ if(b.matches('[data-side-chapter]'))return {id:(b.dataset.sideChapter==='1'?'step-':'wp-step-')+b.dataset.sideRoute,chapter:Number(b.dataset.sideChapter)};
+ return null;
+};
+function paint(){
+ const p=read(PRIMARY),s=read(SECONDARY);
+ document.querySelectorAll('[data-marker],[data-wp-marker],[data-v529-marker]').forEach(b=>{
+  const on=same(p,resolve(b));b.classList.toggle('active',!!on);b.setAttribute('aria-pressed',on?'true':'false');
+  if(b.matches('[data-marker]'))b.textContent=on?'● OVDJE SAM':'● Ovdje sam';
+  else b.textContent=on?'● OVDJE SAM':'● Ovdje sam';
+ });
+ document.querySelectorAll('[data-side-chapter]').forEach(b=>{const on=same(s,resolve(b));b.classList.toggle('active',!!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'●':'○'});
+ const returnSide=document.querySelector('.v59-side-return');if(returnSide)returnSide.classList.toggle('has-side',!!s);
+ document.querySelectorAll('[data-er232-lock]').forEach(b=>{const isPrimary=b.dataset.er232Lock==='primary';const on=locked(isPrimary?LOCKP:LOCKS);b.textContent=(on?'🔒 ':'🔓 ')+(isPrimary?'Tu sam':'Bijela točka');b.setAttribute('aria-pressed',on?'true':'false')});
+}
+function openElement(el){if(!el)return false;let a=el;while(a){if(a.tagName==='DETAILS')a.open=true;a=a.parentElement}requestAnimationFrame(()=>el.scrollIntoView({behavior:'smooth',block:'start'}));return true}
+function goPrimary(){const p=read(PRIMARY);return p?openElement(document.getElementById(p.id)):false}
+function goSecondary(){const p=read(SECONDARY);return p?openElement(document.getElementById(p.id)):false}
+function goPrimaryMap(){const p=read(PRIMARY);if(!p)return false;
+ const chapter=document.getElementById('v529-ch-'+p.chapter);
+ let target=p.chapter===1?document.getElementById('limgrave-map'):p.chapter===2?document.getElementById('weeping-map'):chapter?.querySelector('img[src^="assets/map-"]');
+ if(!target){const route=document.getElementById(p.id);target=route?.closest('details.chapter-group')?.querySelector('img[src^="assets/map-"]')}
+ return openElement(target);
+}
+// Capture before legacy handlers, which otherwise recreate Chapter 1 bookmarks.
+window.addEventListener('click',e=>{
+ const b=e.target.closest('[data-marker],[data-wp-marker],[data-v529-marker],[data-side-chapter]');
+ if(b){const side=b.hasAttribute('data-side-chapter'),key=side?SECONDARY:PRIMARY,lk=side?LOCKS:LOCKP,p=resolve(b),old=read(key);
+  if(!p)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  if(same(old,p))write(key,null);else if(!old||!locked(lk))write(key,p);
+  paint();return;
+ }
+ const lock=e.target.closest('[data-er232-lock]');if(lock){e.preventDefault();const k=lock.dataset.er232Lock==='primary'?LOCKP:LOCKS;write(k,!locked(k));paint();return}
+ const map=e.target.closest('[data-er232-map]');if(map){e.preventDefault();e.stopPropagation();goPrimaryMap();return}
+ const ret=e.target.closest('.v59-side-return');if(ret){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goSecondary();return}
+ const primaryReturn=e.target.closest('button.continue[onclick*="goMarker"],#returnMarker,#goMarker');
+ if(primaryReturn){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPrimary();return}
+},true);
+window.er232GoPrimary=goPrimary;window.er232GoMap=goPrimaryMap;
+function setup(){
+ const hero=document.querySelector('.hero')||document.getElementById('contents-panel');
+ if(hero&&!document.getElementById('er232-lock-settings')){
+  const panel=document.createElement('div');panel.id='er232-lock-settings';panel.className='er232-settings';
+  panel.innerHTML='<strong>📍 Pozicije i zaključavanje</strong><div class="er232-lock-row"><button type="button" data-er232-lock="primary"></button><button type="button" data-er232-lock="secondary"></button><button type="button" data-er232-map>🗺 Karta za „Tu sam”</button></div><small>Kad je zaključano: klik na isto mjesto uklanja oznaku, a zaključavanje ostaje uključeno. Potom odaberi novu poziciju.</small>';
+  hero.appendChild(panel);
+ }
+ paint();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+window.addEventListener('pageshow',paint);
+})();</script></body></html>
