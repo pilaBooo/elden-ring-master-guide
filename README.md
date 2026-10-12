@@ -1,13 +1,11 @@
-# Elden Ring Master Guide — V5.12 (GitHub Pages)
+# Elden Ring Master Guide V6.231 — GitHub Pages
 
-## Instalacija
-Prenesi `index.html` u korijen GitHub repozitorija (zamijeni prethodni `index.html`). `README.md` možeš također zamijeniti ovim. GitHub Pages koristi granu `main`, mapu `/ (root)`.
+Upload **index.html**, **.nojekyll** and the entire **assets/** folder to the repository root.
+Enable GitHub Pages (Deploy from a branch, main / root).
 
-## Promjene V5.12
-- Uklonjena mogućnost isključivanja automatskog zatvaranja dovršenih podchaptera; funkcija se prisilno uključuje.
-- Globalni Platinum i Items paneli premješteni su iz područja nakon chaptera prema gornjoj navigaciji; gornji gumbi ostaju aktivni.
-- Dodane male oznake 🏆 uz potvrđene boss rute u naslovima, gdje se nalaze.
-- Očuvani postojeći profili, kvačice, karte, oznake i poglavlja iz V5.11.
+The `index.html` uses relative image paths `assets/map-XX.png`; do not rename or omit them.
+The separate V6.229 HTML remains the self-contained offline version; `index.html` in this package is NOT self-contained.
 
-## Napomena
-Ovo je testna verzija. Napredak se čuva u Safari localStorageu na istom uređaju i domeni. Prije resetiranja ili većih izmjena izvezi sigurnosnu kopiju profila.
+**Progress:** browser localStorage is per origin. Export JSON backup from your current guide, then import it on the deployed site. Keep a second copy of your JSON backup.
+
+This build has passed structural checks and JS syntax checks; it has not been tested in iPhone Safari or on a live GitHub Pages deployment.
