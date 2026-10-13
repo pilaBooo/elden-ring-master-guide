@@ -2227,28 +2227,30 @@ function setup(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 window.addEventListener('pageshow',paint);
-})();</script><script id="v6235-auto-ch3-ch8">
+})();</script><script id="v6239-unified-route-completion">
 (function(){
 'use strict';
-// CH2-CH26: derive route completion only when real task checkboxes exist.
-// Steps without tasks retain their original manual route control until their content is normalized.
+// A route is complete only when every existing individual task is checked.
+// Never convert a generic route tick into acquired collectibles.
 const KEY='er-master-v529-route-checks';
+const entries=[];
+const byStep=new Map();
 const all=Array.from(document.querySelectorAll('details.v529-step[id]'));
-const chapters=new Map();
+const selector='input[type="checkbox"][data-v533-task],input[type="checkbox"][data-v574-task],input[type="checkbox"][data-v575-task],input[type="checkbox"][data-v576-task],input[type="checkbox"][data-v577-task],input[type="checkbox"][data-v578-task],input[type="checkbox"][data-v579-task],input[type="checkbox"][data-v580-task],input[type="checkbox"][data-v581-task],input[type="checkbox"][data-v582-task],input[type="checkbox"][data-v583-task],input[type="checkbox"][data-v584-task],input[type="checkbox"][data-v585-task],input[type="checkbox"][data-v586-task],input[type="checkbox"][data-v587-task],input[type="checkbox"][data-v588-task],input[type="checkbox"][data-v589-task],input[type="checkbox"][data-v590-task],input[type="checkbox"][data-v591-task],input[type="checkbox"][data-v592-task]';
 for(const step of all){
  const match=/^v529-step-(\d+)-/.exec(step.id);
  if(!match)continue;
- const ch=Number(match[1]);if(ch<2||ch>26)continue;
- const tasks=Array.from(step.querySelectorAll('input[data-v533-task]'));
+ const ch=Number(match[1]);
+ if(ch<3||ch>26)continue;
+ const tasks=Array.from(step.querySelectorAll(selector));
  const route=step.querySelector('input[data-v529-check]');
  if(!tasks.length||!route)continue;
  step.classList.add('v6235-task-driven');
- if(!chapters.has(ch))chapters.set(ch,[]);
- chapters.get(ch).push({step,tasks,route});
+ const entry={step,tasks,route,ch};entries.push(entry);byStep.set(step,entry);
 }
 function read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(_){return {}}}
 function refreshOne(entry,interacted){
- const {step,tasks,route}=entry;
+ const {step,tasks,route,ch}=entry;
  const done=tasks.filter(t=>t.checked).length;
  const complete=done===tasks.length;
  const count=step.querySelector('[data-v529-count]');if(count)count.textContent=done+'/'+tasks.length;
@@ -2259,32 +2261,29 @@ function refreshOne(entry,interacted){
  step.classList.toggle('v6235-auto-complete',complete);
  if(interacted&&complete&&changed){
   step.open=false;
-  // Advance only inside the same chapter. Never auto-check the next step.
-  const ch=Number(/^v529-step-(\d+)-/.exec(step.id)[1]);
-  const allChapter=all.filter(s=>s.id.startsWith('v529-step-'+ch+'-'));
-  const i=allChapter.indexOf(step);if(i>=0&&i+1<allChapter.length)allChapter[i+1].open=true;
+  const siblings=all.filter(s=>s.id.startsWith('v529-step-'+ch+'-'));
+  const i=siblings.indexOf(step);if(i>=0&&i+1<siblings.length)siblings[i+1].open=true;
  }
 }
 function refreshChapter(ch){
- const entries=chapters.get(ch)||[];
- const allChapter=all.filter(s=>s.id.startsWith('v529-step-'+ch+'-'));
- const completed=allChapter.filter(s=>{
-  const e=entries.find(x=>x.step===s);
-  return e?e.route.checked:!!s.querySelector('input[data-v529-check]:checked');
- }).length;
+ const siblings=all.filter(s=>s.id.startsWith('v529-step-'+ch+'-'));
+ const done=siblings.filter(s=>s.querySelector('input[data-v529-check]:checked')).length;
  const counter=document.querySelector('[data-chapter-counter="'+ch+'"]');
- if(counter)counter.textContent=completed+'/'+allChapter.length;
+ if(counter)counter.textContent=done+'/'+siblings.length;
 }
-function refreshAll(){for(const [ch,entries] of chapters){entries.forEach(e=>refreshOne(e,false));refreshChapter(ch)}}
+function refreshAll(){for(const e of entries)refreshOne(e,false);for(const ch of new Set(entries.map(e=>e.ch)))refreshChapter(ch)}
 document.addEventListener('change',event=>{
  const target=event.target;
- if(!(target instanceof HTMLInputElement)||!target.matches('input[data-v533-task]'))return;
- const step=target.closest('details.v529-step.v6235-task-driven');if(!step)return;
- const ch=Number(/^v529-step-(\d+)-/.exec(step.id)[1]);
- const entry=(chapters.get(ch)||[]).find(e=>e.step===step);
- if(entry){refreshOne(entry,true);refreshChapter(ch)}
+ if(!(target instanceof HTMLInputElement)||!target.matches(selector))return;
+ const step=target.closest('details.v529-step');
+ const entry=byStep.get(step);
+ if(!entry)return;
+ // Allow individual task-specific persistence listeners to finish first.
+ queueMicrotask(()=>{refreshOne(entry,true);refreshChapter(entry.ch)});
 });
-refreshAll();window.addEventListener('pageshow',refreshAll);
+refreshAll();
+window.addEventListener('pageshow',refreshAll);
+window.addEventListener('storage',refreshAll);
 })();
 </script>
 </body></html>
