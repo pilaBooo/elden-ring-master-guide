@@ -274,10 +274,10 @@ details.master-panel,details.chapter-group,details.subchapter,details.npc-card {
 }
 </style>
 <meta name="description" content="Elden Ring Master Guide — interaktivni PSN i NPC walkthrough na hrvatskom.">
-<style id="v6234-ch7-style">
-/* V6.234: Chapter 7 route completion is derived from individual tasks. */
-details.v529-step[id^="v529-step-7-"] label.v529-check {display:none !important;}
-details.v529-step[id^="v529-step-7-"] .count[data-v529-count] {font-variant-numeric:tabular-nums;}
+<style id="v6235-auto-style">
+/* Hide route completion only where individual checklist tasks actually exist. */
+details.v529-step.v6235-task-driven label.v529-check {display:none !important;}
+details.v529-step.v6235-task-driven .count[data-v529-count] {font-variant-numeric:tabular-nums;}
 </style>
 </head>
 <body>
@@ -2230,47 +2230,64 @@ function setup(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 window.addEventListener('pageshow',paint);
-})();</script><script id="v6234-ch7-auto">
+})();</script><script id="v6235-auto-ch3-ch8">
 (function(){
 'use strict';
-// V6.234 first audited tranche: CH7. No independent route-completed checkbox.
-const CH='7', KEY='er-master-v529-route-checks';
-const steps=Array.from(document.querySelectorAll('details.v529-step[id^="v529-step-7-"]'));
-if(!steps.length)return;
-function read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(_){return {}}}
-function refreshStep(step,fromInteraction){
+// CH3-CH8: derive route completion only when real task checkboxes exist.
+// Steps without tasks retain their original manual route control until their content is normalized.
+const KEY='er-master-v529-route-checks';
+const all=Array.from(document.querySelectorAll('details.v529-step[id]'));
+const chapters=new Map();
+for(const step of all){
+ const match=/^v529-step-(\d+)-/.exec(step.id);
+ if(!match)continue;
+ const ch=Number(match[1]);if(ch<3||ch>8)continue;
  const tasks=Array.from(step.querySelectorAll('input[data-v533-task]'));
  const route=step.querySelector('input[data-v529-check]');
- if(!tasks.length||!route)return;
- const id=route.getAttribute('data-v529-check');
- const done=tasks.filter(t=>t.checked).length,complete=done===tasks.length;
- const count=step.querySelector('[data-v529-count]');
- if(count)count.textContent=done+'/'+tasks.length;
+ if(!tasks.length||!route)continue;
+ step.classList.add('v6235-task-driven');
+ if(!chapters.has(ch))chapters.set(ch,[]);
+ chapters.get(ch).push({step,tasks,route});
+}
+function read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(_){return {}}}
+function refreshOne(entry,interacted){
+ const {step,tasks,route}=entry;
+ const done=tasks.filter(t=>t.checked).length;
+ const complete=done===tasks.length;
+ const count=step.querySelector('[data-v529-count]');if(count)count.textContent=done+'/'+tasks.length;
  const changed=route.checked!==complete;
  route.checked=complete;
- const state=read();if(state[id]!==complete){state[id]=complete;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){}}
- step.classList.toggle('v6234-auto-complete',complete);
- if(fromInteraction&&complete&&changed){
-   step.open=false;
-   // Open the next step in the same chapter without checking any task.
-   const i=steps.indexOf(step);if(i>=0&&i+1<steps.length)steps[i+1].open=true;
+ const id=route.getAttribute('data-v529-check');
+ const state=read();if(id&&state[id]!==complete){state[id]=complete;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){}}
+ step.classList.toggle('v6235-auto-complete',complete);
+ if(interacted&&complete&&changed){
+  step.open=false;
+  // Advance only inside the same chapter. Never auto-check the next step.
+  const ch=Number(/^v529-step-(\d+)-/.exec(step.id)[1]);
+  const allChapter=all.filter(s=>s.id.startsWith('v529-step-'+ch+'-'));
+  const i=allChapter.indexOf(step);if(i>=0&&i+1<allChapter.length)allChapter[i+1].open=true;
  }
 }
-function refreshChapter(){
- const counter=document.querySelector('[data-chapter-counter="'+CH+'"]');
- if(counter)counter.textContent=steps.filter(s=>s.classList.contains('v6234-auto-complete')).length+'/'+steps.length;
+function refreshChapter(ch){
+ const entries=chapters.get(ch)||[];
+ const allChapter=all.filter(s=>s.id.startsWith('v529-step-'+ch+'-'));
+ const completed=allChapter.filter(s=>{
+  const e=entries.find(x=>x.step===s);
+  return e?e.route.checked:!!s.querySelector('input[data-v529-check]:checked');
+ }).length;
+ const counter=document.querySelector('[data-chapter-counter="'+ch+'"]');
+ if(counter)counter.textContent=completed+'/'+allChapter.length;
 }
-function refreshAll(){steps.forEach(s=>refreshStep(s,false));refreshChapter()}
-// The existing task handler persists the individual checkbox first.
-document.addEventListener('change',e=>{
- const input=e.target.closest&&e.target.closest('input[data-v533-task]');
- if(!input)return;
- const step=input.closest('details.v529-step[id^="v529-step-7-"]');
- if(!step)return;
- refreshStep(step,true);refreshChapter();
+function refreshAll(){for(const [ch,entries] of chapters){entries.forEach(e=>refreshOne(e,false));refreshChapter(ch)}}
+document.addEventListener('change',event=>{
+ const target=event.target;
+ if(!(target instanceof HTMLInputElement)||!target.matches('input[data-v533-task]'))return;
+ const step=target.closest('details.v529-step.v6235-task-driven');if(!step)return;
+ const ch=Number(/^v529-step-(\d+)-/.exec(step.id)[1]);
+ const entry=(chapters.get(ch)||[]).find(e=>e.step===step);
+ if(entry){refreshOne(entry,true);refreshChapter(ch)}
 });
-refreshAll();
-window.addEventListener('pageshow',refreshAll);
+refreshAll();window.addEventListener('pageshow',refreshAll);
 })();
 </script>
 </body></html>
