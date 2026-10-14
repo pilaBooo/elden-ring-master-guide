@@ -154,3 +154,5 @@ V6.379: NPC Tracker: zasebni opisi zadataka za zajedničke NPC okvire; ne mijenj
 
 
 V6.380: NPC Tracker now activates original Walkthrough checkboxes through native click (shared profile persistence/event logic), and nested NPC callouts are no longer excluded during discovery. No PSN map, step IDs or saved data changed.
+
+V6.381: NPC, Trofeji and Items dashboards are read-only; progress checkboxes can only be changed in Walkthrough. Dashboard status remains synchronized.

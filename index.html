@@ -2425,7 +2425,7 @@ function setup(){
   const chapterMatch=chapterTitle.match(/(?:CHAPTER|CH)\s*(\d+)/i);
   const chapterLabel=chapterMatch?'CH'+chapterMatch[1]:'Walkthrough';
   const sequence=document.createElement('small');sequence.className='v354-sequence';sequence.textContent=chapterLabel+' · NPC korak '+(group.items.length+1);row.appendChild(sequence);
-  const label=document.createElement('label');const toggle=document.createElement('input');toggle.type='checkbox';toggle.className='v349-toggle';const span=document.createElement('span');span.textContent=title.replace(/\s*[—–]\s*NPC zadatak potvrđen\s*$/i,'').trim();label.append(toggle,span);row.appendChild(label);
+  const label=document.createElement('label');const toggle=document.createElement('input');toggle.type='checkbox';toggle.className='v349-toggle';toggle.disabled=true;toggle.setAttribute('aria-label','Status NPC zadatka (mijenja se samo u Walkthroughu)');const span=document.createElement('span');span.textContent=title.replace(/\s*[—–]\s*NPC zadatak potvrđen\s*$/i,'').trim();label.append(toggle,span);row.appendChild(label);
   // V6.379: A shared NPC callout may contain actions for several characters.
   // In that case, show the character's own checklist instruction rather than
   // repeating the entire shared callout (which can mislead about completion).
@@ -2447,17 +2447,8 @@ function setup(){
    if(history.replaceState)history.replaceState(null,'','#'+card.id);
   });
   row.appendChild(link);group.body.appendChild(row);
-  toggle.addEventListener('change',()=>{
-   if(input.checked!==toggle.checked){
-    // Use the original Walkthrough checkbox's native activation so its own
-    // click/change handlers, persistence and profile logic all run normally.
-    // Never write to a second progress store from the NPC Tracker.
-    input.click();
-    // Defensive sync if a future Walkthrough rule prevents the change.
-    toggle.checked=!!input.checked;
-   }
-   refresh();
-  });const item={input,toggle,row,title:chapterLabel+' '+title,desc:desc.textContent,group};group.items.push(item);items.push(item);
+  // V6.381: NPC dashboard is strictly read-only; only Walkthrough can change progress.
+const item={input,toggle,row,title:chapterLabel+' '+title,desc:desc.textContent,group};group.items.push(item);items.push(item);
  });
  function refresh(){let total=0;groups.forEach(g=>{let done=0;g.items.forEach(x=>{x.toggle.checked=!!x.input.checked;x.row.classList.toggle('v354-complete',!!x.input.checked);if(x.input.checked)done++});total+=done;g.count.textContent=done+' / '+g.items.length;g.meter.max=g.items.length||1;g.meter.value=done;g.next.disabled=done===g.items.length;g.next.textContent=done===g.items.length?'✓ Svi povezani koraci završeni':'↗ Sljedeći nezavršeni korak';g.detail.classList.toggle('v354-all-done',done===g.items.length)});counter.textContent=groups.size+' NPC skupina · '+total+' / '+items.length+' povezanih koraka (samo pronađene kvačice)';filter();}
  function filter(){const q=search.value.toLocaleLowerCase();groups.forEach(g=>{let any=false;g.items.forEach(x=>{const match=(!q||g.name.toLocaleLowerCase().includes(q)||(x.title+' '+x.desc).toLocaleLowerCase().includes(q))&&(!onlyOpen.checked||!x.input.checked);x.row.hidden=!match;if(match)any=true});g.detail.hidden=!any;if(q&&any)g.detail.open=true})}
@@ -2488,4 +2479,29 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #v349-npc-live .v349-person.v354-all-done>summary{border-left:4px solid #68c79d}
 #v349-npc-live .v349-person:not(.v354-all-done)>summary{border-left:4px solid #64748b}
 </style>
+
+<script id="v381-readonly-dashboards">
+(function(){
+ 'use strict';
+ const selectors=['#npc-tracker-panel','#platinum-panel','#items-v511'];
+ function lock(){
+  for(const selector of selectors){
+   const panel=document.querySelector(selector);
+   if(!panel)continue;
+   panel.querySelectorAll('input[type="checkbox"]').forEach(box=>{
+    if(!box.disabled){box.disabled=true;box.setAttribute('title','Napredak se označava samo u Walkthroughu');}
+   });
+  }
+ }
+ function setup(){
+  lock();
+  const observer=new MutationObserver(lock);
+  for(const selector of selectors){
+   const panel=document.querySelector(selector);
+   if(panel)observer.observe(panel,{childList:true,subtree:true});
+  }
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+</script>
 </body></html>
