@@ -1,3 +1,7 @@
+V6.363: NPC Tracker now shows per-character progress meters derived from the existing shared Walkthrough checkboxes; no new storage keys, routes or map changes. Browser functional verification pending.
+
+V6.362: NPC Tracker sada uključuje i NPC kvačice unutar upozoravajućih callout okvira (Patches, Gatekeeper Gostoc, Roderika u CH1). Status se dijeli s Walkthroughom; postojeći identifikatori nisu mijenjani. Funkcionalni test u pregledniku nije proveden.
+
 # V6.350 – NPC identitet i kronološko grupiranje
 
 - Ispravljeno grupiranje ponovljenih NPC susreta: Yura (3 koraka), Boc (2), Varré (2), Roderika/Hewg (2), Nepheli/Gideon (2), Rogier/Fia (2), Renna/Ranni (2).
@@ -96,3 +100,10 @@ V6.354: NPC tracker adds chronological per-character task sequence, completed st
 
 ## V6.357 – NPC razgovori (razvojna verzija)
 Dodano 6 NPC kvačica za postojeće dijaloge u Liurniji/Jarburgu: npc-v357-boc-lake-facing, npc-v357-thops-irith, npc-v357-patches-liurnia, npc-v357-hyetta-purified, npc-v357-jarbairn-jarburg, npc-v357-boc-east-gate. Ne mijenjati PSN numeraciju. Provjeriti na uređaju prije korištenja za igranje.
+
+
+V6.358: NPC Tracker sada obuhvaća postojeće NPC kvačice u div i aside okvirima, uključujući starije formate; uklonjeno filtriranje koje je preskakalo div NPC korake bez bold oznake NPC. Prošireno prepoznavanje identiteta za Melina, Miriel, Iji, Tanith, Albus i Three Fingers. Razvojna verzija, funkcionalni test potreban.
+
+
+## V6.361 — šest postojećih NPC kontrolnih točaka
+Dodane su zajedničke Walkthrough/Tracker kvačice za D (Roundtable), Thops (Church of Irith), Jar-Bairn (Jarburg), Fia (Roundtable), Alexander (Radahn Festival) i Fia (nakon Champions). Bez promjene PSN numeracije. Nove kvačice treba funkcionalno testirati prije uporabe kao glavne verzije.
