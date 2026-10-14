@@ -1,3 +1,6 @@
+V6.370: Melina NPC milestones added at CH18 Morgott and CH24 Forge, using shared Walkthrough NPC checkboxes.
+V6.369: Četiri zajednička NPC događaja u Roundtable Holdu razdvojena su na samostalne kvačice za Roderiku/Hewga, Nepheli/Gideona, Rogiera/Fiju i Eniju/Two Fingers. Svaki lik ima izričitu oznaku data-npc-character.
+
 V6.363: NPC Tracker now shows per-character progress meters derived from the existing shared Walkthrough checkboxes; no new storage keys, routes or map changes. Browser functional verification pending.
 
 V6.362: NPC Tracker sada uključuje i NPC kvačice unutar upozoravajućih callout okvira (Patches, Gatekeeper Gostoc, Roderika u CH1). Status se dijeli s Walkthroughom; postojeći identifikatori nisu mijenjani. Funkcionalni test u pregledniku nije proveden.
@@ -107,3 +110,47 @@ V6.358: NPC Tracker sada obuhvaća postojeće NPC kvačice u div i aside okvirim
 
 ## V6.361 — šest postojećih NPC kontrolnih točaka
 Dodane su zajedničke Walkthrough/Tracker kvačice za D (Roundtable), Thops (Church of Irith), Jar-Bairn (Jarburg), Fia (Roundtable), Alexander (Radahn Festival) i Fia (nakon Champions). Bez promjene PSN numeracije. Nove kvačice treba funkcionalno testirati prije uporabe kao glavne verzije.
+
+
+## V6.364 – NPC identitet (razvojna verzija)
+- Preciznije prepoznavanje Rya, Iji i Fia (granice riječi, bez slučajnih podudaranja).
+- NPC okvir ili pojedinačna kvačica mogu izričito zadati `data-npc-character` za pravilno grupiranje višestrukih NPC događaja.
+- Postojeće kvačice, ID-jevi, profili i PSN koraci ostaju nepromijenjeni.
+- Potrebna je daljnja ručna provjera svih CH1–CH26 NPC događaja i funkcionalni test.
+
+
+## V6.365 — NPC warning callout discovery
+Fixed the NPC Tracker checkbox collector: its nearest-container filter now includes `.callout.warn`, allowing NPC-specific checkboxes already present in warning callouts to be displayed and synced. No new checkbox identifiers or route numbers were introduced. Browser functional verification remains pending.
+
+
+## V6.366 — NPC chapter context
+NPC Tracker displays the actual Walkthrough chapter (CH1–CH26) for each linked NPC checkbox, includes chapter in search, and labels the return link with its chapter. Existing checkbox IDs and profile storage are unchanged. Browser interaction still requires device testing.
+
+V6.371: Melina optional Site of Grace dialogue note (no checkbox) and optional Morgott NPC summon note (no checkbox); no PSN numbering or saved checkbox IDs changed.
+
+
+V6.372: U postojećim uputama uz Godricka i Magma Wyrm Makara razjašnjeno je koji NPC summon nije quest uvjet; nema novih checkboxova ni promjena PSN rute.
+
+
+### V6.373 — Blaidd / Darriwil (opcijski summon)
+- CH1 Forlorn Hound Evergaol: napomena o odgodi borbe do Blaiddova susreta u Mistwood Ruins, opcionalnom zlatnom summon znaku i tome da summon nije uvjet questa. Bez nove kvačice.
+- Nisu mijenjane postojeće kvačice, PSN brojevi ni karte.
+
+
+### V6.374
+- Melina: tri konkretne opcionalne natuknice na CH2 Church of Pilgrimage, CH3 Third Church of Marika i CH24 Church of Repose. Bez kvačica i promjene PSN ruta.
+
+
+V6.375: Clarified optional Edgar and D Twin Brother boss summons versus quest-critical Yura red summon; no new checkboxes or PSN changes.
+
+V6.376: Seluvis prerequisite audit: potion/Gideon, hidden cellar, puppet purchase, About the scheme, and branch warning before Magic Scorpion Charm.
+
+
+V6.377: NPC Tracker links now open all collapsed Walkthrough ancestors before scrolling to the source step, including on mobile; tracker counters explicitly indicate linked steps only, not verified full quest completion.
+
+V6.378: NPC Tracker identity fixes: Ensha, Two Fingers separate from Enia, and D's Twin Brother; keyboard focus styling. No changes to quest checkbox IDs or maps.
+
+V6.379: NPC Tracker: zasebni opisi zadataka za zajedničke NPC okvire; ne mijenja spremljene kvačice.
+
+
+V6.380: NPC Tracker now activates original Walkthrough checkboxes through native click (shared profile persistence/event logic), and nested NPC callouts are no longer excluded during discovery. No PSN map, step IDs or saved data changed.
