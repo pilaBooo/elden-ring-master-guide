@@ -1,3 +1,5 @@
+V6.393: Seluvis/Ranni: razlikuje se preporučena ruta od opcionalne Amber Draught izdaje i oporavka putem Celestial Dew / Church of Vows; jasno istaknuta nepovratnost Magic Scorpion Charma. Bez novih kvačica ili izmjena PSN numeracije.
+
 V6.370: Melina NPC milestones added at CH18 Morgott and CH24 Forge, using shared Walkthrough NPC checkboxes.
 V6.369: Četiri zajednička NPC događaja u Roundtable Holdu razdvojena su na samostalne kvačice za Roderiku/Hewga, Nepheli/Gideona, Rogiera/Fiju i Eniju/Two Fingers. Svaki lik ima izričitu oznaku data-npc-character.
 
@@ -184,3 +186,26 @@ V6.388: CH2 Irina return checkpoint assigned to Edgar (interaction with Edgar at
 V6.389: Boc East Raya Lucaria Gate relocation conversation is now a dedicated Walkthrough checkbox with explicit Boc NPC identity. No PSN route numbering changes; NPC/Trophies/Items remain read-only.
 
 V6.390: NPC checkpoint identity audit (5 explicit NPC associations), plus checkbox inventory and audit report. Full NPC quest verification remains in progress.
+
+V6.391: Boc Altus Highway Junction NPC checkpoint; NPC audit note.
+
+V6.392: uklonjena duplicirana Boc NPC kvacica za East Raya Lucaria Gate; dodan NPC audit popis.
+
+V6.394: NPC identity audit (Edgar, Fia, Corhyn), full NPC checkbox inventory for ongoing external comparison.
+
+
+V6.396: explicit character identity for remaining 13 NPC-task checkboxes; no ID changes.
+
+V6.397: Fixed 62 malformed NPC input tags (identity attribute previously placed after self-closing slash); Renna alias grouped with Ranni; HTML parser verified 92 unique NPC checkboxes.
+
+V6.398: Edgar the Revenger CH8 #8 existing boss checkbox linked to Edgar NPC Tracker; Hyetta separate; NPC walkthrough step inventory added.
+
+V6.399: Alexander optional Gael Tunnel/Festival checkboxes removed; post-Radahn Wailing Dunes quest checkpoint added in CH10 #34.
+
+V6.400: Alexander Farum Azula finale NPC tracker checkpoint (CH25 #12); separate Jar-Bairn handover.
+
+V6.403: Existing Millicent quest checkboxes linked to NPC Tracker (six checkpoints, no duplicate tasks).
+
+V6.405: NPC checkbox structural inventory and audit report (no gameplay changes).
+
+V6.419: CH18 #29 Kenneth throne dialogue and optional Gostoc stone purchase tracked separately from Nepheli reward.
