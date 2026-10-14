@@ -1,3 +1,10 @@
+# V6.350 – NPC identitet i kronološko grupiranje
+
+- Ispravljeno grupiranje ponovljenih NPC susreta: Yura (3 koraka), Boc (2), Varré (2), Roderika/Hewg (2), Nepheli/Gideon (2), Rogier/Fia (2), Renna/Ranni (2).
+- Postojeće kvačice i identifikatori ostaju nepromijenjeni.
+- Prikaz i dalje obuhvaća samo 22 NPC callouta s kvačicama; potpuna dopuna CH1–CH26 nije završena.
+- Razvojna verzija; za igranje koristiti potvrđenu V6.345.
+
 # Elden Ring Master Guide V6.231 — GitHub Pages
 
 Upload **index.html**, **.nojekyll** and the entire **assets/** folder to the repository root.
@@ -53,3 +60,23 @@ Testiraj na stvarnoj GitHub Pages adresi (ne kao lokalni file://), u istom pregl
 Ako nešto ne radi, zabilježi profil, CH, PSN korak, očekivani i stvarni rezultat te screenshot.
 
 Programska izmjena V6.345: zaštita upisa markera automatskog napredovanja u CH2 kada preglednik onemogući localStorage. Nije izvršen funkcionalni test preglednika.
+
+
+V6.346: NPC Tracker first-stage cleanup: existing NPC task list and branch rewards prioritized, old audit panels moved to collapsed archive at runtime. No checkbox identifiers or storage format changed. NPC task consistency across all chapters remains pending.
+
+
+V6.347: First chronological NPC tracker: existing walkthrough NPC callouts are mirrored read-only in order; two missing NPC callout checkboxes added. The full CH1-CH26 NPC checkpoint conversion remains pending.
+
+
+## V6.348 — NPC tracker checkbox mirror
+NPC Tracker sada prikazuje kvačicu na svakom postojećem povezanom NPC koraku. Klik na kvačicu prosljeđuje promjenu originalnoj kvačici u Walkthroughu, bez drugog ključa spremanja. Ovaj prolaz još ne pokriva NPC napomene koje nemaju originalni zadatak niti kompletno grupiranje po liku. Funkcionalni test na iPhoneu još nije proveden.
+
+
+V6.349: NPC tracker now groups existing shared-checkbox NPC callouts by character in first Walkthrough encounter order. Does not yet cover all NPC milestones in CH1-26.
+
+
+## V6.351 — NPC checkbox expansion
+Added shared Walkthrough/Tracker NPC checkboxes for: Irina, D, Hunter of the Dead, Kenneth Haight, Blaidd / Mistwood, Thops: dovrši odmah. These are standalone NPC actions, not caution notes. Existing data-id based persistence retained. Not yet a complete CH1–CH26 audit.
+
+
+V6.352: Added 27 NPC quest checkpoint checkboxes to existing chronological walkthrough NPC asides; shared with NPC tracker via data-id, without changing PSN numbers. Development version; functional browser test pending.
