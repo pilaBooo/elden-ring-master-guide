@@ -80,3 +80,19 @@ Added shared Walkthrough/Tracker NPC checkboxes for: Irina, D, Hunter of the Dea
 
 
 V6.352: Added 27 NPC quest checkpoint checkboxes to existing chronological walkthrough NPC asides; shared with NPC tracker via data-id, without changing PSN numbers. Development version; functional browser test pending.
+
+
+V6.353: NPC tracker now includes standalone NPC aside steps with data-npc-task checkboxes, not just .callout.npc; original walkthrough inputs remain source of truth. Functional browser test pending.
+
+
+V6.354: NPC tracker adds chronological per-character task sequence, completed styling, and filter for unfinished tasks. Uses the same walkthrough checkboxes and profile state; no new progress keys.
+
+
+## V6.355 — NPC identiteti i pretraga
+- Razdvojeni su zasebni NPC likovi Sellen/Jerren, Millicent/Gowry, Corhyn/Goldmask, Roderika/Hewg, Nepheli/Gideon, Rogier/Fia i Edgar/Irina gdje naslov koraka dopušta razlučivanje.
+- Pretraga otvara karticu s pronađenim zadatkom.
+- Nisu dodane nove kvačice; preostali NPC događaji i višeznačni naslovi zahtijevaju daljnju reviziju.
+
+
+## V6.357 – NPC razgovori (razvojna verzija)
+Dodano 6 NPC kvačica za postojeće dijaloge u Liurniji/Jarburgu: npc-v357-boc-lake-facing, npc-v357-thops-irith, npc-v357-patches-liurnia, npc-v357-hyetta-purified, npc-v357-jarbairn-jarburg, npc-v357-boc-east-gate. Ne mijenjati PSN numeraciju. Provjeriti na uređaju prije korištenja za igranje.
