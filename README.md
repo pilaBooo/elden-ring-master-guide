@@ -156,3 +156,31 @@ V6.379: NPC Tracker: zasebni opisi zadataka za zajedničke NPC okvire; ne mijenj
 V6.380: NPC Tracker now activates original Walkthrough checkboxes through native click (shared profile persistence/event logic), and nested NPC callouts are no longer excluded during discovery. No PSN map, step IDs or saved data changed.
 
 V6.381: NPC, Trofeji and Items dashboards are read-only; progress checkboxes can only be changed in Walkthrough. Dashboard status remains synchronized.
+
+V6.382: NPC Tracker filter "Prikazi samo nezavrsene korake" ostaje interaktivan; sve statusne kvacice u gornjim pregledima ostaju samo za citanje.
+
+
+V6.383: CH26 Godfrey/Hoarah Loux — Nepheli Loux optional quest-linked summon note (no checkbox; quest completion not dependent on summoning). Sources checked: Eldenpedia Nepheli Loux and PC Gamer Gostoc quest.
+
+
+V6.384: NPC Tracker deep links highlight the exact Walkthrough quest checkpoint; dashboard task checkboxes remain read-only.
+
+
+## V6.385 – Rya quest coverage audit
+Usporedba s vanjskim NPC checklistovima otkrila je tri postojeća Rya quest koraka bez individualnih Walkthrough kvačica. Dodane su zasebne kvačice za Prison Town discovery, Serpent’s Amnion/Tanith i skriveni susret s Ryom bez Tonic of Forgetfulness. NPC/Trofeji/Itemi ostaju read-only. Potpuna revizija svih NPC questova još traje; ovaj popravak nije potvrda da su svi questovi potpuni.
+
+
+## V6.386 – Patches quest audit
+Added two separate Walkthrough NPC checkboxes for Patches at Shaded Castle (Dancer's Castanets) and Murkwater Cave return (Patches' Crouch). The optional delivery of Castanets to Tanith remains a note, not a mandatory checkbox. Read-only dashboards unchanged.
+
+
+## V6.387 — Boc / Irina audit
+- Postojeća Boc kvačica u CH18, East Capital Rampart, sada je povezana s NPC Trackerom bez novog ID-a ili duplikata.
+- Irina: dodana napomena o povratku nakon Castle Mornea i Edgarovoj invaziji; teorije o Hyetti nisu zadatak.
+- Gornji paneli ostaju samo za čitanje; označavanje isključivo u Walkthroughu.
+
+V6.388: CH2 Irina return checkpoint assigned to Edgar (interaction with Edgar at Irina location); NPC Tracker no longer creates generic NPC CHECKPOINT card for this step. Read-only dashboard retained.
+
+V6.389: Boc East Raya Lucaria Gate relocation conversation is now a dedicated Walkthrough checkbox with explicit Boc NPC identity. No PSN route numbering changes; NPC/Trophies/Items remain read-only.
+
+V6.390: NPC checkpoint identity audit (5 explicit NPC associations), plus checkbox inventory and audit report. Full NPC quest verification remains in progress.
