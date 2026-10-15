@@ -1,211 +1,37 @@
-V6.393: Seluvis/Ranni: razlikuje se preporučena ruta od opcionalne Amber Draught izdaje i oporavka putem Celestial Dew / Church of Vows; jasno istaknuta nepovratnost Magic Scorpion Charma. Bez novih kvačica ili izmjena PSN numeracije.
+# Elden Ring Master Guide — V6.480 (GitHub CLEAN)
 
-V6.370: Melina NPC milestones added at CH18 Morgott and CH24 Forge, using shared Walkthrough NPC checkboxes.
-V6.369: Četiri zajednička NPC događaja u Roundtable Holdu razdvojena su na samostalne kvačice za Roderiku/Hewga, Nepheli/Gideona, Rogiera/Fiju i Eniju/Two Fingers. Svaki lik ima izričitu oznaku data-npc-character.
+Hrvatski Elden Ring Master Guide za GitHub Pages. Ova distribucija sadrzi samo datoteke potrebne za javnu stranicu, plus ovaj README.
 
-V6.363: NPC Tracker now shows per-character progress meters derived from the existing shared Walkthrough checkboxes; no new storage keys, routes or map changes. Browser functional verification pending.
+## Struktura
 
-V6.362: NPC Tracker sada uključuje i NPC kvačice unutar upozoravajućih callout okvira (Patches, Gatekeeper Gostoc, Roderika u CH1). Status se dijeli s Walkthroughom; postojeći identifikatori nisu mijenjani. Funkcionalni test u pregledniku nije proveden.
+- `index.html` — glavni vodic i NPC Tracker
+- `assets/` — 29 slika karata; **mapa vec postoji u ZIP-u**
+- `.nojekyll` — omogucava jednostavno objavljivanje putem GitHub Pages
+- `README.md` — ove upute; ne prikazuje se u vodicu
 
-# V6.350 – NPC identitet i kronološko grupiranje
+## Postavljanje na GitHub Pages
 
-- Ispravljeno grupiranje ponovljenih NPC susreta: Yura (3 koraka), Boc (2), Varré (2), Roderika/Hewg (2), Nepheli/Gideon (2), Rogier/Fia (2), Renna/Ranni (2).
-- Postojeće kvačice i identifikatori ostaju nepromijenjeni.
-- Prikaz i dalje obuhvaća samo 22 NPC callouta s kvačicama; potpuna dopuna CH1–CH26 nije završena.
-- Razvojna verzija; za igranje koristiti potvrđenu V6.345.
+1. Raspakiraj ZIP. Nemoj posebno stvarati `assets`: mapa nastaje raspakiravanjem.
+2. U repozitoriju `pilabooo.github.io` zamijeni postojeci `index.html`.
+3. Prenesi mapu `assets` **sa svim slikama** tako da putanje ostanu `assets/map-01.png` itd. Ako vec postoji mapa `assets`, zamijeni njezine datoteke odgovarajucima iz ZIP-a.
+4. Dodaj `README.md`. Dodaj `.nojekyll` ako vec nije u repozitoriju.
+5. GitHub Pages mora objavljivati iz korijena odgovarajuce grane (`/root`). Pricekaj objavu i osvjezi Safari stranicu.
 
-# Elden Ring Master Guide V6.231 — GitHub Pages
+**Napomena za iPhone:** GitHubovo web sucelje na mobitelu moze ogranicavati prijenos cijelih mapa. Nemoj uploadati ZIP kao jednu datoteku i ocekivati da ce se raspakirati. Ako se `assets` ne moze prenijeti kao mapa, upotrijebi racunalo s GitHub web prijenosom (drag-and-drop raspakirane mape) ili Git aplikaciju koja podrzava commit direktorija. Ako su sve karte vec u postojecoj `assets` mapi, nije ih potrebno ponovno prenositi ako su iste.
 
-Upload **index.html**, **.nojekyll** and the entire **assets/** folder to the repository root.
-Enable GitHub Pages (Deploy from a branch, main / root).
+## Testiranje
 
-The `index.html` uses relative image paths `assets/map-XX.png`; do not rename or omit them.
-The separate V6.229 HTML remains the self-contained offline version; `index.html` in this package is NOT self-contained.
+**Prvo izvezi JSON sigurnosnu kopiju napretka.** Testiraj na drugom profilu.
 
-**Progress:** browser localStorage is per origin. Export JSON backup from your current guide, then import it on the deployed site. Keep a second copy of your JSON backup.
+1. Otvori stranicu; provjeri navigaciju i ucitavanje svih karata.
+2. Oznaci i odznaci NPC korak; provjeri osvjezavanje NPC Trackera.
+3. Sellen GOLD/RED: suprotna grana treba biti vizualno prigusena; istovremene odluke trebaju upozorenje.
+4. Millicent GOLD: RED alternativa treba biti prigusena; NG+ napomena vidljiva.
+5. Seluvis: provjeri STOP za Magic Scorpion Charm.
+6. Dung Eater: pocetni koraci ne smiju lazno potvrditi zavrsnu nagradu.
+7. Promijeni profil; provjeri odvojenost napretka.
+8. Izvezi JSON, promijeni testnu kvacicu, uvezi JSON i provjeri vracanje stanja i Trackera.
 
-This build has passed structural checks and JS syntax checks; it has not been tested in iPhone Safari or on a live GitHub Pages deployment.
+## Vazno
 
-
-V6.233: plutajući gumb karte prati aktivnu oznaku Tu sam; ispravljen odabir karte za CH3–CH26.
-
-
-## V6.340 — plan funkcionalne regresijske provjere (dva profila)
-
-Ova verzija ne mijenja spremanje napretka ni identifikatore kvačica. Dodan je precizan
-postupak provjere prije proglašavanja dvaju profila potpuno funkcionalnima.
-
-1. Na Profilu A označi jednu obaveznu kvačicu nezavršene PSN rute. Provjeri status rute.
-2. Prebaci na Profil B: ista kvačica mora ostati neoznačena, a ruta nezavršena.
-3. Označi drugi zadatak na Profilu B, vrati se na A: obje vrijednosti moraju ostati odvojene.
-4. Na Profilu A označi Legendary predmet; Itemi mora pokazati promjenu samo na A.
-5. Provjeri boss trofej u Trofeji, a zatim NPC izbor i suprotnu NG+ nagradu.
-6. Osvježi stranicu i ponovi prebacivanje A/B; oba profila moraju zadržati svoje stanje.
-7. Provjeri da opcionalni zadatak ne blokira završavanje PSN rute.
-8. Izvezi zasebnu JSON sigurnosnu kopiju prije stvarnog igranja ili objave.
-
-**Kriterij prolaza:** nema prelijevanja kvačica ili odluka između profila;
-Tracker statusi odgovaraju kvačicama aktivnog profila i ostaju točni nakon reload-a.
-
-**Status:** strukturna provjera ZIP-a i sintaksna provjera JavaScripta provedene.
-Funkcionalni test u Chromiumu/iPhone Safariju još nije potvrđen; ne označavati ga kao PASS.
-
-
-V6.343: Zaštita dijagnostike starih CH9–11 profilnih ključeva od iznimke pri blokiranom localStorage; prikazuje upozorenje umjesto prekida. Nije mijenjano spremanje ni profilni podaci. Browser test je blokiran pravilima okruženja.
-
-
-## V6.345 – Prvi korisnički test (smoke test)
-
-Testiraj na stvarnoj GitHub Pages adresi (ne kao lokalni file://), u istom pregledniku i bez privatnog načina rada. Prije testiranja napravi sigurnosnu kopiju napretka ako vodič nudi izvoz.
-
-1. Otvori profil A i označi jednu prethodno neoznačenu kvačicu; zapamti CH i korak.
-2. Prebaci se na profil B: ta kvačica mora ostati neoznačena.
-3. Vrati se na profil A: kvačica mora biti označena.
-4. Ponovno učitaj stranicu i potvrdi da je kvačica profila A ostala označena.
-5. U profilu B označi drugu kvačicu, prebaci se na A pa opet na B; oba napretka moraju biti odvojena.
-6. Provjeri prikazuju li NPC, Itemi i Trofeji stanje aktivnog profila.
-7. Nemoj resetirati poglavlja ili brisati podatke tijekom ovog testa.
-
-Ako nešto ne radi, zabilježi profil, CH, PSN korak, očekivani i stvarni rezultat te screenshot.
-
-Programska izmjena V6.345: zaštita upisa markera automatskog napredovanja u CH2 kada preglednik onemogući localStorage. Nije izvršen funkcionalni test preglednika.
-
-
-V6.346: NPC Tracker first-stage cleanup: existing NPC task list and branch rewards prioritized, old audit panels moved to collapsed archive at runtime. No checkbox identifiers or storage format changed. NPC task consistency across all chapters remains pending.
-
-
-V6.347: First chronological NPC tracker: existing walkthrough NPC callouts are mirrored read-only in order; two missing NPC callout checkboxes added. The full CH1-CH26 NPC checkpoint conversion remains pending.
-
-
-## V6.348 — NPC tracker checkbox mirror
-NPC Tracker sada prikazuje kvačicu na svakom postojećem povezanom NPC koraku. Klik na kvačicu prosljeđuje promjenu originalnoj kvačici u Walkthroughu, bez drugog ključa spremanja. Ovaj prolaz još ne pokriva NPC napomene koje nemaju originalni zadatak niti kompletno grupiranje po liku. Funkcionalni test na iPhoneu još nije proveden.
-
-
-V6.349: NPC tracker now groups existing shared-checkbox NPC callouts by character in first Walkthrough encounter order. Does not yet cover all NPC milestones in CH1-26.
-
-
-## V6.351 — NPC checkbox expansion
-Added shared Walkthrough/Tracker NPC checkboxes for: Irina, D, Hunter of the Dead, Kenneth Haight, Blaidd / Mistwood, Thops: dovrši odmah. These are standalone NPC actions, not caution notes. Existing data-id based persistence retained. Not yet a complete CH1–CH26 audit.
-
-
-V6.352: Added 27 NPC quest checkpoint checkboxes to existing chronological walkthrough NPC asides; shared with NPC tracker via data-id, without changing PSN numbers. Development version; functional browser test pending.
-
-
-V6.353: NPC tracker now includes standalone NPC aside steps with data-npc-task checkboxes, not just .callout.npc; original walkthrough inputs remain source of truth. Functional browser test pending.
-
-
-V6.354: NPC tracker adds chronological per-character task sequence, completed styling, and filter for unfinished tasks. Uses the same walkthrough checkboxes and profile state; no new progress keys.
-
-
-## V6.355 — NPC identiteti i pretraga
-- Razdvojeni su zasebni NPC likovi Sellen/Jerren, Millicent/Gowry, Corhyn/Goldmask, Roderika/Hewg, Nepheli/Gideon, Rogier/Fia i Edgar/Irina gdje naslov koraka dopušta razlučivanje.
-- Pretraga otvara karticu s pronađenim zadatkom.
-- Nisu dodane nove kvačice; preostali NPC događaji i višeznačni naslovi zahtijevaju daljnju reviziju.
-
-
-## V6.357 – NPC razgovori (razvojna verzija)
-Dodano 6 NPC kvačica za postojeće dijaloge u Liurniji/Jarburgu: npc-v357-boc-lake-facing, npc-v357-thops-irith, npc-v357-patches-liurnia, npc-v357-hyetta-purified, npc-v357-jarbairn-jarburg, npc-v357-boc-east-gate. Ne mijenjati PSN numeraciju. Provjeriti na uređaju prije korištenja za igranje.
-
-
-V6.358: NPC Tracker sada obuhvaća postojeće NPC kvačice u div i aside okvirima, uključujući starije formate; uklonjeno filtriranje koje je preskakalo div NPC korake bez bold oznake NPC. Prošireno prepoznavanje identiteta za Melina, Miriel, Iji, Tanith, Albus i Three Fingers. Razvojna verzija, funkcionalni test potreban.
-
-
-## V6.361 — šest postojećih NPC kontrolnih točaka
-Dodane su zajedničke Walkthrough/Tracker kvačice za D (Roundtable), Thops (Church of Irith), Jar-Bairn (Jarburg), Fia (Roundtable), Alexander (Radahn Festival) i Fia (nakon Champions). Bez promjene PSN numeracije. Nove kvačice treba funkcionalno testirati prije uporabe kao glavne verzije.
-
-
-## V6.364 – NPC identitet (razvojna verzija)
-- Preciznije prepoznavanje Rya, Iji i Fia (granice riječi, bez slučajnih podudaranja).
-- NPC okvir ili pojedinačna kvačica mogu izričito zadati `data-npc-character` za pravilno grupiranje višestrukih NPC događaja.
-- Postojeće kvačice, ID-jevi, profili i PSN koraci ostaju nepromijenjeni.
-- Potrebna je daljnja ručna provjera svih CH1–CH26 NPC događaja i funkcionalni test.
-
-
-## V6.365 — NPC warning callout discovery
-Fixed the NPC Tracker checkbox collector: its nearest-container filter now includes `.callout.warn`, allowing NPC-specific checkboxes already present in warning callouts to be displayed and synced. No new checkbox identifiers or route numbers were introduced. Browser functional verification remains pending.
-
-
-## V6.366 — NPC chapter context
-NPC Tracker displays the actual Walkthrough chapter (CH1–CH26) for each linked NPC checkbox, includes chapter in search, and labels the return link with its chapter. Existing checkbox IDs and profile storage are unchanged. Browser interaction still requires device testing.
-
-V6.371: Melina optional Site of Grace dialogue note (no checkbox) and optional Morgott NPC summon note (no checkbox); no PSN numbering or saved checkbox IDs changed.
-
-
-V6.372: U postojećim uputama uz Godricka i Magma Wyrm Makara razjašnjeno je koji NPC summon nije quest uvjet; nema novih checkboxova ni promjena PSN rute.
-
-
-### V6.373 — Blaidd / Darriwil (opcijski summon)
-- CH1 Forlorn Hound Evergaol: napomena o odgodi borbe do Blaiddova susreta u Mistwood Ruins, opcionalnom zlatnom summon znaku i tome da summon nije uvjet questa. Bez nove kvačice.
-- Nisu mijenjane postojeće kvačice, PSN brojevi ni karte.
-
-
-### V6.374
-- Melina: tri konkretne opcionalne natuknice na CH2 Church of Pilgrimage, CH3 Third Church of Marika i CH24 Church of Repose. Bez kvačica i promjene PSN ruta.
-
-
-V6.375: Clarified optional Edgar and D Twin Brother boss summons versus quest-critical Yura red summon; no new checkboxes or PSN changes.
-
-V6.376: Seluvis prerequisite audit: potion/Gideon, hidden cellar, puppet purchase, About the scheme, and branch warning before Magic Scorpion Charm.
-
-
-V6.377: NPC Tracker links now open all collapsed Walkthrough ancestors before scrolling to the source step, including on mobile; tracker counters explicitly indicate linked steps only, not verified full quest completion.
-
-V6.378: NPC Tracker identity fixes: Ensha, Two Fingers separate from Enia, and D's Twin Brother; keyboard focus styling. No changes to quest checkbox IDs or maps.
-
-V6.379: NPC Tracker: zasebni opisi zadataka za zajedničke NPC okvire; ne mijenja spremljene kvačice.
-
-
-V6.380: NPC Tracker now activates original Walkthrough checkboxes through native click (shared profile persistence/event logic), and nested NPC callouts are no longer excluded during discovery. No PSN map, step IDs or saved data changed.
-
-V6.381: NPC, Trofeji and Items dashboards are read-only; progress checkboxes can only be changed in Walkthrough. Dashboard status remains synchronized.
-
-V6.382: NPC Tracker filter "Prikazi samo nezavrsene korake" ostaje interaktivan; sve statusne kvacice u gornjim pregledima ostaju samo za citanje.
-
-
-V6.383: CH26 Godfrey/Hoarah Loux — Nepheli Loux optional quest-linked summon note (no checkbox; quest completion not dependent on summoning). Sources checked: Eldenpedia Nepheli Loux and PC Gamer Gostoc quest.
-
-
-V6.384: NPC Tracker deep links highlight the exact Walkthrough quest checkpoint; dashboard task checkboxes remain read-only.
-
-
-## V6.385 – Rya quest coverage audit
-Usporedba s vanjskim NPC checklistovima otkrila je tri postojeća Rya quest koraka bez individualnih Walkthrough kvačica. Dodane su zasebne kvačice za Prison Town discovery, Serpent’s Amnion/Tanith i skriveni susret s Ryom bez Tonic of Forgetfulness. NPC/Trofeji/Itemi ostaju read-only. Potpuna revizija svih NPC questova još traje; ovaj popravak nije potvrda da su svi questovi potpuni.
-
-
-## V6.386 – Patches quest audit
-Added two separate Walkthrough NPC checkboxes for Patches at Shaded Castle (Dancer's Castanets) and Murkwater Cave return (Patches' Crouch). The optional delivery of Castanets to Tanith remains a note, not a mandatory checkbox. Read-only dashboards unchanged.
-
-
-## V6.387 — Boc / Irina audit
-- Postojeća Boc kvačica u CH18, East Capital Rampart, sada je povezana s NPC Trackerom bez novog ID-a ili duplikata.
-- Irina: dodana napomena o povratku nakon Castle Mornea i Edgarovoj invaziji; teorije o Hyetti nisu zadatak.
-- Gornji paneli ostaju samo za čitanje; označavanje isključivo u Walkthroughu.
-
-V6.388: CH2 Irina return checkpoint assigned to Edgar (interaction with Edgar at Irina location); NPC Tracker no longer creates generic NPC CHECKPOINT card for this step. Read-only dashboard retained.
-
-V6.389: Boc East Raya Lucaria Gate relocation conversation is now a dedicated Walkthrough checkbox with explicit Boc NPC identity. No PSN route numbering changes; NPC/Trophies/Items remain read-only.
-
-V6.390: NPC checkpoint identity audit (5 explicit NPC associations), plus checkbox inventory and audit report. Full NPC quest verification remains in progress.
-
-V6.391: Boc Altus Highway Junction NPC checkpoint; NPC audit note.
-
-V6.392: uklonjena duplicirana Boc NPC kvacica za East Raya Lucaria Gate; dodan NPC audit popis.
-
-V6.394: NPC identity audit (Edgar, Fia, Corhyn), full NPC checkbox inventory for ongoing external comparison.
-
-
-V6.396: explicit character identity for remaining 13 NPC-task checkboxes; no ID changes.
-
-V6.397: Fixed 62 malformed NPC input tags (identity attribute previously placed after self-closing slash); Renna alias grouped with Ranni; HTML parser verified 92 unique NPC checkboxes.
-
-V6.398: Edgar the Revenger CH8 #8 existing boss checkbox linked to Edgar NPC Tracker; Hyetta separate; NPC walkthrough step inventory added.
-
-V6.399: Alexander optional Gael Tunnel/Festival checkboxes removed; post-Radahn Wailing Dunes quest checkpoint added in CH10 #34.
-
-V6.400: Alexander Farum Azula finale NPC tracker checkpoint (CH25 #12); separate Jar-Bairn handover.
-
-V6.403: Existing Millicent quest checkboxes linked to NPC Tracker (six checkpoints, no duplicate tasks).
-
-V6.405: NPC checkbox structural inventory and audit report (no gameplay changes).
-
-V6.419: CH18 #29 Kenneth throne dialogue and optional Gostoc stone purchase tracked separately from Nepheli reward.
+Ova CLEAN verzija ne mijenja NPC logiku u odnosu na V6.480. Uklonjene su razvojne AUDIT/CSV datoteke iz distribucije, ne izvorne kontrole iz internog radnog arhiva. Uvodni testovi nisu zamjena za funkcionalno testiranje u pregledniku.
