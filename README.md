@@ -35,3 +35,7 @@ Hrvatski Elden Ring Master Guide za GitHub Pages. Ova distribucija sadrzi samo d
 ## Vazno
 
 Ova CLEAN verzija ne mijenja NPC logiku u odnosu na V6.480. Uklonjene su razvojne AUDIT/CSV datoteke iz distribucije, ne izvorne kontrole iz internog radnog arhiva. Uvodni testovi nisu zamjena za funkcionalno testiranje u pregledniku.
+
+
+## V6.482 — Blaidd tracker
+Jedinstvena READ-ONLY Blaidd kartica, 14 referentnih redaka, s postojećim Walkthrough kvačicama gdje postoje. Koraci bez vlastite kvačice označeni su kao nepraćeni; nisu automatski potvrđeni.
