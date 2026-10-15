@@ -39,3 +39,6 @@ Ova CLEAN verzija ne mijenja NPC logiku u odnosu na V6.480. Uklonjene su razvojn
 
 ## V6.482 — Blaidd tracker
 Jedinstvena READ-ONLY Blaidd kartica, 14 referentnih redaka, s postojećim Walkthrough kvačicama gdje postoje. Koraci bez vlastite kvačice označeni su kao nepraćeni; nisu automatski potvrđeni.
+
+
+V6.484: Blaidd - tracked walkthrough checkpoints; existing IDs preserved.
