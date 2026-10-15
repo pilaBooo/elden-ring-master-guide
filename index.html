@@ -307,7 +307,7 @@ details.v529-step.v6235-task-driven .count[data-v529-count] {font-variant-numeri
 #v6482-blaidd-steps .v6482-meta{font-size:.78rem;color:#b4c5d7;margin:5px 0}
 #v6482-blaidd-steps a{color:#a8cafa;font-size:.85rem}
 #v6482-blaidd-steps .v6482-optional{color:#d6bb80}
-</style></head>
+</style><style id="v6483-cleanup">#npc-tracker-panel .v6483-old-blaidd{display:none!important}#v650-npc-tasks,#v650-npc-tasks *{display:none!important}#npc-tracker-panel [class*="npc-audit"],#npc-tracker-panel [id*="audit"]{display:none!important}</style></head>
 <body>
 <header><div class="top"><nav class="newnav"><button onclick="openMasterPanel('npc-tracker-panel')">👥 NPC</button><button onclick="openMasterPanel('platinum-panel')">🏆 Trofeji</button><button onclick="openMasterPanel('items-v511')">💎 Items</button><button onclick="openProfiles()">👤 Profili</button></nav><div class="stackactions"><button onclick="toggleAll(true)">Otvori sve</button><button onclick="toggleAll(false)">Zatvori sve</button></div></div></header>
 <main id="top">
@@ -2665,43 +2665,83 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #v349-npc-live .v349-toggle{cursor:not-allowed}
 #v349-npc-live .v349-task label{cursor:default}
 </style>
-<script>(function(){
+<script id="v6483-blaidd-unified">
+(function(){
+'use strict';
 const tasks=[
- ['CH3','Mistwood: čuj howl, pitaj Kaléa za Finger Snap, pozovi Blaidda i iscrpi dijalog.','v529-step-3-11','Pozovi Blaidda Finger Snapom',0],
- ['CH3','Forlorn Hound Evergaol: porazi Darriwila i razgovaraj s Blaiddom za nagradu.','v529-step-3-11','Blaidd kod Forlorn',1],
- ['CH8','Pristupi Ranni i iscrpi razgovore s projekcijama Blaidda, Ijija i Seluvisa.','v529-step-8-30','Ranni — prihvati službu',0],
- ['CH8','Pronađi Blaidda u Siofra River i iscrpi razgovor o Nokronu.','v529-step-8-31','Iscrpi Blaiddov dijalog',0],
- ['CH8','Seluvisovo pismo odnesi Sellen pa se vrati Blaiddu s informacijom.','v529-step-8-32','Sellen — predaj Seluvis',0],
- ['CH10','Razgovaraj s Blaiddom prije i poslije Radahn Festivala.','v529-step-10-36','Ruta #36 završena',0],
- ['CH10','Provjeri Mistwood Ruins nakon Radahna zbog Blaiddove poruke.','v529-step-10-36','__untracked__',1],
- ['CH10','Forlorn Hound Evergaol: provjeri zatočenog Blaidda, potom razgovaraj s Ijijem.','v529-step-10-36','__untracked__',1],
- ['CH12','Pronađi Fingerslayer Blade i predaj ga Ranni.','v529-step-12-20','npc-v635',0],
- ['CH13','Renna’s Rise: prođi portal u Ainsel River Main i razgovaraj s Miniature Ranni.','v529-step-13-1','Talk to miniature Ranni',0],
- ['CH13','Porazi Baleful Shadow i preuzmi Discarded Palace Key.','v529-step-13-10','Baleful Shadow',0],
- ['CH15','Ispred Ranni’s Rise porazi Blaidda i pokupi Royal Greatsword + Blaidd’s Set.','v529-step-15-5','Blaidd: porazi ga',0],
- ['Dodatno','Blaiddov summon za Darriwila — neobavezno, ne utječe na završetak.','v529-step-3-11','__untracked__',1],
- ['Dodatno','Blaiddov summon za Radahna — neobavezno, ne utječe na završetak.','v529-step-10-36','__untracked__',1]
+ ['CH3','Mistwood: čuj howl, pitaj Kaléa za Finger Snap, pozovi Blaidda i iscrpi dijalog.','v529-step-3-11','npc-v6351-blaidd-mistwood',0],
+ ['CH3','Forlorn Hound Evergaol: porazi Darriwila i razgovaraj s Blaiddom za nagradu.','v529-step-3-11',null,1],
+ ['CH8','Pristupi Ranni i iscrpi razgovore s projekcijama Blaidda, Ijija i Seluvisa.','v529-step-8-30',null,0],
+ ['CH8','Pronađi Blaidda u Siofra River i iscrpi razgovor o Nokronu.','v529-step-8-31',null,0],
+ ['CH8','Seluvisovo pismo odnesi Sellen pa se vrati Blaiddu s informacijom.','v529-step-8-32',null,0],
+ ['CH10','Razgovaraj s Blaiddom prije i poslije Radahn Festivala.','v529-step-10-36',null,0],
+ ['CH10','Provjeri Mistwood Ruins nakon Radahna zbog Blaiddove poruke.','v529-step-10-36',null,1],
+ ['CH10','Forlorn Hound Evergaol: provjeri zatočenog Blaidda, potom razgovaraj s Ijijem.','v529-step-10-36',null,1],
+ ['CH12','Pronađi Fingerslayer Blade i predaj ga Ranni.','v529-step-12-20',null,0],
+ ['CH13','Renna’s Rise: prođi portal u Ainsel River Main i razgovaraj s Miniature Ranni.','v529-step-13-1',null,0],
+ ['CH13','Porazi Baleful Shadow i preuzmi Discarded Palace Key.','v529-step-13-10',null,0],
+ ['CH15','Ispred Ranni’s Rise porazi Blaidda i pokupi Royal Greatsword + Blaidd’s Set.','v529-step-15-5',null,0],
+ ['Dodatno','Blaiddov summon za Darriwila — neobavezno, ne utječe na završetak.','v529-step-3-11',null,1],
+ ['Dodatno','Blaiddov summon za Radahna — neobavezno, ne utječe na završetak.','v529-step-10-36',null,1]
 ];
-function resolve(t){const host=document.getElementById(t[2]);if(!host)return null;
- if(t[3]==='__untracked__')return null;
- const inputs=[...host.querySelectorAll('input[type="checkbox"]')];
- if(t[3]==='npc-v635')return inputs.find(x=>(x.dataset.id||'').startsWith('v347-npc-added-23'))||null;
- return inputs.find(x=>(x.closest('label')?.textContent||'').includes(t[3]))||null;
+function findInput(t){
+ if(t[3])return document.querySelector('input[data-id="'+t[3]+'"]');
+ const root=document.getElementById(t[2]);
+ const scope=root||document.getElementById('contents-panel');
+ if(!scope)return null;
+ const hints={
+ 'Pristupi Ranni':['Ranni — prihvati službu','Blaidd','Ranni'],
+ 'Pronađi Blaidda':['Iscrpi Blaiddov dijalog','Blaidd'],
+ 'Seluvisovo pismo':['Sellen — predaj Seluvis','Seluvis'],
+ 'Razgovaraj s Blaiddom':['Ruta #36 završena','Blaidd'],
+ 'Pronađi Fingerslayer':['Fingerslayer Blade'],
+ 'Renna’s Rise':['Talk to miniature Ranni','Miniature Ranni'],
+ 'Porazi Baleful':['Baleful Shadow'],
+ 'Ispred Ranni’s Rise':['Blaidd: porazi ga']
+ };
+ const keys=Object.keys(hints).find(k=>t[1].startsWith(k));
+ if(!keys)return null;
+ const candidates=[...document.querySelectorAll('#contents-panel input[type="checkbox"], #walkthrough input[type="checkbox"], .walkthrough input[type="checkbox"]')];
+ for(const hint of hints[keys]){
+  const match=candidates.find(x=>(x.closest('label')?.textContent||x.parentElement?.textContent||'').includes(hint));
+  if(match)return match;
+ }
+ // Do not infer completion from unrelated controls.
+ return null;
 }
-function update(){const root=document.getElementById('v6482-blaidd-steps'),counter=document.getElementById('v6482-blaidd-count');if(!root||!counter)return;
- let done=0,trackable=0;root.replaceChildren();tasks.forEach((t,i)=>{const input=resolve(t),checked=!!input?.checked;
- if(input){trackable++;if(checked)done++;}
- const line=document.createElement('div');line.className='v6482-line'+(checked?' v6482-done':'');
- const dot=document.createElement('span');dot.className='v6482-dot';dot.textContent=checked?'✓':input?'○':'·';
- const body=document.createElement('div');const desc=document.createElement('div');desc.className='v6482-desc';desc.textContent=t[1];body.append(desc);
- const meta=document.createElement('div');meta.className='v6482-meta'+(t[4]?' v6482-optional':'');meta.textContent=t[0]+(t[4]?' · neobavezno':'')+(input?' · prati Walkthrough':' · bez zasebne kvačice');body.append(meta);
- const a=document.createElement('a');a.href='#'+t[2];a.textContent='↗ Otvori korak u Walkthroughu';body.append(a);line.append(dot,body);root.append(line);
- });counter.textContent=done+'/'+trackable+' praćenih';}
-function setup(){const panel=document.getElementById('npc-tracker-panel');if(!panel)return;update();
- document.addEventListener('change',e=>{if(e.target?.matches('input[type="checkbox"]'))update()},true);
- document.addEventListener('click',e=>{if(e.target?.closest('#v6482-blaidd-card'))update()},true);
+function hideOld(){
+ const panel=document.getElementById('npc-tracker-panel');if(!panel)return;
+ panel.querySelectorAll('details').forEach(el=>{
+  if(el.id==='v6482-blaidd-card')return;
+  const summary=el.querySelector(':scope > summary');if(!summary)return;
+  const name=(summary.textContent||'').replace(/\s*\d+\s*\/\s*\d+.*/,'').trim();
+  if(/^Blaidd(?: the Half-Wolf)?$/i.test(name))el.classList.add('v6483-old-blaidd');
+ });
+}
+function update(){
+ const root=document.getElementById('v6482-blaidd-steps'),counter=document.getElementById('v6482-blaidd-count');if(!root||!counter)return;
+ let done=0,tracked=0;root.replaceChildren();
+ tasks.forEach(t=>{
+  const input=findInput(t),checked=!!input?.checked;
+  if(input){tracked++;if(checked)done++;}
+  const line=document.createElement('div');line.className='v6482-line'+(checked?' v6482-done':'');
+  const dot=document.createElement('span');dot.className='v6482-dot';dot.textContent=checked?'✓':input?'○':'·';
+  const body=document.createElement('div');const desc=document.createElement('div');desc.className='v6482-desc';desc.textContent=t[1];body.append(desc);
+  const meta=document.createElement('div');meta.className='v6482-meta'+(t[4]?' v6482-optional':'');meta.textContent=t[0]+(t[4]?' · neobavezno':'')+(input?' · prati Walkthrough':' · bez zasebne kvačice');body.append(meta);
+  const a=document.createElement('a');a.href='#'+t[2];a.textContent='↗ Otvori korak u Walkthroughu';body.append(a);line.append(dot,body);root.append(line);
+ });
+ counter.textContent=done+'/'+tracked+' praćenih';hideOld();
+}
+function setup(){
+ const panel=document.getElementById('npc-tracker-panel');if(!panel)return;
+ update();
+ document.addEventListener('change',e=>{if(e.target?.matches('input[type="checkbox"]'))queueMicrotask(update)},true);
  window.addEventListener('storage',update);
- const refresh=panel.querySelectorAll('button');refresh.forEach(b=>{if((b.textContent||'').includes('Osvježi'))b.addEventListener('click',update)});
+ panel.addEventListener('click',e=>{if(e.target.closest('summary,button'))queueMicrotask(update)},true);
+ const observer=new MutationObserver(()=>{hideOld()});observer.observe(panel,{childList:true,subtree:true});
+ const original=window.v349RefreshNPC;
+ if(typeof original==='function')window.v349RefreshNPC=function(...args){const result=original.apply(this,args);queueMicrotask(update);return result};
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
-})();</script></body></html>
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
+})();
+</script></body></html>
